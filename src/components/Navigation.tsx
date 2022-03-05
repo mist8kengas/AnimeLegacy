@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAnglesLeft,
   faAnglesRight,
+  faFilm,
   faHome,
   faSearch,
   faTheaterMasks,
@@ -44,6 +45,13 @@ export default function Navigation() {
             <div className={styles.navItem}>
               <FontAwesomeIcon icon={faTheaterMasks} />
               <span>Genres</span>
+            </div>
+          </Link>
+
+          <Link to={'/movies'} reloadDocument={true} title={'Movies'}>
+            <div className={styles.navItem}>
+              <FontAwesomeIcon icon={faFilm} />
+              <span>Movies</span>
             </div>
           </Link>
 

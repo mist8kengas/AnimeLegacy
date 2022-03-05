@@ -8,18 +8,6 @@ $node-width: calc($image-width + 0.3em * 2);
   animation: loadIn 0.3s ease-in 0.3s 1 forwards;
 }
 
-.content[data-none='true'] {
-  display: grid;
-  min-height: calc(100vh - 4em);
-
-  justify-content: center;
-  align-items: center;
-  gap: 0.6em;
-
-  opacity: 0;
-  animation: loadIn 0.3s ease-in 0.3s 1 forwards;
-}
-
 .noContent {
   display: flex;
   width: 100%;
@@ -63,17 +51,14 @@ $node-width: calc($image-width + 0.3em * 2);
       font-weight: 400;
     }
   }
-  h1 i,
   select {
     background-color: inherit;
+    margin-left: 0.1em;
     color: #aaa;
     font-size: inherit;
     font-style: normal;
     border: none;
     outline: none;
-  }
-  select {
-    margin-left: 0.1em;
 
     &:hover {
       cursor: pointer;
@@ -81,68 +66,7 @@ $node-width: calc($image-width + 0.3em * 2);
   }
 }
 
-.searchForm {
-  display: grid;
-  justify-content: center;
-}
-.searchInput {
-  display: inline-grid;
-  grid-template-columns: 1fr max-content;
-
-  input[type='text'] {
-    border-bottom: 0.1em solid transparent;
-
-    &::placeholder {
-      transition: color;
-      transition-timing-function: ease-in-out;
-      transition-duration: 0.2s;
-    }
-
-    transition: border-color;
-    transition-timing-function: ease-in-out;
-    transition-duration: 0.2s;
-
-    &:focus {
-      &::placeholder {
-        color: #dedef7;
-      }
-      border-color: var(--c-main);
-    }
-  }
-}
-.searchBar {
-  padding: 0.3em;
-  background: none;
-  font-size: 1.2em;
-  border: none;
-  outline: none;
-}
-.searchButton {
-  background: none;
-  color: #aaa;
-  font-size: 1.2em;
-  border: none;
-
-  border: 0.3em solid transparent;
-  border-radius: 0.3em;
-
-  transition: background-color, color;
-  transition-timing-function: ease-in-out;
-  transition-duration: 0.2s;
-
-  .icon {
-    width: 1em;
-    height: 1em;
-    font-size: inherit;
-  }
-
-  &:hover {
-    color: #fff;
-    cursor: pointer;
-  }
-}
-
-.searchContent {
+.movieContent {
   display: grid;
   // padding: 0 1em;
   grid-template-columns: repeat(auto-fit, minmax(0, $node-width));
@@ -152,7 +76,15 @@ $node-width: calc($image-width + 0.3em * 2);
   gap: 0.6em;
 }
 
-.searchNode {
+.movieNodePlaceholder {
+  display: flex;
+  width: 203px;
+  height: 387px;
+  background-color: rgba(255, 255, 255, 0.02);
+  justify-content: center;
+  align-items: center;
+}
+.movieNode {
   display: grid;
   position: relative;
   width: $node-width;
