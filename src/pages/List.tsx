@@ -91,7 +91,7 @@ function ListResult(init_list: string, page: number = 1) {
           <div className={styles.header}>
             <h1>
               Anime List
-              <select
+              {/* <select
                 onChange={(e) => setList(e.target.value)}
                 defaultValue={list}
               >
@@ -123,8 +123,122 @@ function ListResult(init_list: string, page: number = 1) {
                 <option value='X'>X</option>
                 <option value='Y'>Y</option>
                 <option value='Z'>Z</option>
-              </select>
+              </select> */}
             </h1>
+
+            <div className={styles.lists}>
+              <button onClick={() => setList('All')} disabled={list === 'All'}>
+                <span>All</span>
+              </button>
+
+              <button onClick={() => setList('0')} disabled={list === '0'}>
+                <span>0-9</span>
+              </button>
+
+              <button onClick={() => setList('A')} disabled={list === 'A'}>
+                <span>A</span>
+              </button>
+
+              <button onClick={() => setList('B')} disabled={list === 'B'}>
+                <span>B</span>
+              </button>
+
+              <button onClick={() => setList('C')} disabled={list === 'C'}>
+                <span>C</span>
+              </button>
+
+              <button onClick={() => setList('D')} disabled={list === 'D'}>
+                <span>D</span>
+              </button>
+
+              <button onClick={() => setList('E')} disabled={list === 'E'}>
+                <span>E</span>
+              </button>
+
+              <button onClick={() => setList('F')} disabled={list === 'F'}>
+                <span>F</span>
+              </button>
+
+              <button onClick={() => setList('G')} disabled={list === 'G'}>
+                <span>G</span>
+              </button>
+
+              <button onClick={() => setList('H')} disabled={list === 'H'}>
+                <span>H</span>
+              </button>
+
+              <button onClick={() => setList('I')} disabled={list === 'I'}>
+                <span>I</span>
+              </button>
+
+              <button onClick={() => setList('J')} disabled={list === 'J'}>
+                <span>J</span>
+              </button>
+
+              <button onClick={() => setList('K')} disabled={list === 'K'}>
+                <span>K</span>
+              </button>
+
+              <button onClick={() => setList('L')} disabled={list === 'L'}>
+                <span>L</span>
+              </button>
+
+              <button onClick={() => setList('M')} disabled={list === 'M'}>
+                <span>M</span>
+              </button>
+
+              <button onClick={() => setList('N')} disabled={list === 'N'}>
+                <span>N</span>
+              </button>
+
+              <button onClick={() => setList('O')} disabled={list === 'O'}>
+                <span>O</span>
+              </button>
+
+              <button onClick={() => setList('P')} disabled={list === 'P'}>
+                <span>P</span>
+              </button>
+
+              <button onClick={() => setList('Q')} disabled={list === 'Q'}>
+                <span>Q</span>
+              </button>
+
+              <button onClick={() => setList('R')} disabled={list === 'R'}>
+                <span>R</span>
+              </button>
+
+              <button onClick={() => setList('S')} disabled={list === 'S'}>
+                <span>S</span>
+              </button>
+
+              <button onClick={() => setList('T')} disabled={list === 'T'}>
+                <span>T</span>
+              </button>
+
+              <button onClick={() => setList('U')} disabled={list === 'U'}>
+                <span>U</span>
+              </button>
+
+              <button onClick={() => setList('V')} disabled={list === 'V'}>
+                <span>V</span>
+              </button>
+
+              <button onClick={() => setList('W')} disabled={list === 'W'}>
+                <span>W</span>
+              </button>
+
+              <button onClick={() => setList('X')} disabled={list === 'X'}>
+                <span>X</span>
+              </button>
+
+              <button onClick={() => setList('Y')} disabled={list === 'Y'}>
+                <span>Y</span>
+              </button>
+
+              <button onClick={() => setList('Z')} disabled={list === 'Z'}>
+                <span>Z</span>
+              </button>
+            </div>
           </div>
 
           <div className={styles.listContent}>

@@ -57,17 +57,17 @@ export default function Navigation() {
             </div>
           </Link>
 
-          <Link to={'/search'} reloadDocument={true} title={'Search'}>
-            <div className={styles.navItem}>
-              <FontAwesomeIcon icon={faSearch} />
-              <span>Search</span>
-            </div>
-          </Link>
-
           <Link to={'/list'} reloadDocument={true} title={'List'}>
             <div className={styles.navItem}>
               <FontAwesomeIcon icon={faBars} />
               <span>List</span>
+            </div>
+          </Link>
+
+          <Link to={'/search'} reloadDocument={true} title={'Search'}>
+            <div className={styles.navItem}>
+              <FontAwesomeIcon icon={faSearch} />
+              <span>Search</span>
             </div>
           </Link>
 
