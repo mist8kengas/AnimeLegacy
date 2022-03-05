@@ -1,0 +1,77 @@
+.banner {
+  display: grid;
+  width: 100%;
+  padding: 0.3em;
+  background-color: var(--background);
+  font-size: 1.1em;
+
+  grid-template-columns: 1fr max-content;
+  align-items: center;
+  gap: 0.3em;
+
+  border: 0.3em solid transparent;
+  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07))
+    drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
+  z-index: 10;
+
+  .content {
+    display: block;
+    position: relative;
+    padding: 0 0.6em;
+  }
+
+  .dismissButton {
+    button {
+      padding: 0.3em;
+      background-color: transparent;
+      font-size: 1.2em;
+      border: 0.3em solid transparent;
+      border-radius: 100%;
+
+      transition: background-color, color;
+      transition-timing-function: ease-in-out;
+      transition-duration: 0.2s;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+        color: #dedef7;
+        cursor: pointer;
+      }
+
+      .icon {
+        display: block;
+        width: 1em;
+        height: 1em;
+        font-size: inherit;
+      }
+    }
+  }
+
+  // data-type
+  --background: transparent;
+  &[data-type='info'] {
+    --background: #237c13;
+  }
+  &[data-type='warning'] {
+    --background: #e08a00;
+  }
+  &[data-type='critical'] {
+    --background: #cb1201;
+  }
+
+  // data-position
+  &[data-position='top'] {
+    position: sticky;
+    top: 0;
+
+    border-bottom-left-radius: 0.3em;
+    border-bottom-right-radius: 0.3em;
+  }
+  &[data-position='bottom'] {
+    position: sticky;
+    bottom: 0;
+
+    border-top-left-radius: 0.3em;
+    border-top-right-radius: 0.3em;
+  }
+}

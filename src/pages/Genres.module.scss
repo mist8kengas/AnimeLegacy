@@ -1,0 +1,90 @@
+.content {
+  opacity: 0;
+  animation: loadIn 0.3s ease-in 0.3s 1 forwards;
+}
+
+@keyframes loadIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.header {
+  h1 {
+    font-weight: 100;
+    text-align: center;
+  }
+}
+
+.genres {
+  display: grid;
+  grid-template-rows: max-content;
+  justify-content: center;
+  gap: 0.3em;
+
+  .genre {
+    display: grid;
+    padding: 0.6em;
+
+    max-width: 968px;
+
+    grid-template-rows: 1fr max-content;
+    gap: 0.3em;
+
+    background-color: var(--c-main-panel);
+
+    border: 0.3em solid transparent;
+    border-radius: 0.3em;
+
+    transition: background-color, color;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.2s;
+
+    &:hover {
+      background-color: var(--c-main-hov);
+      color: #dedef7;
+      cursor: pointer;
+
+      div.image {
+        opacity: 0.8;
+      }
+    }
+
+    div.image {
+      width: 100%;
+      height: 12em;
+
+      border-radius: 0.3em;
+      overflow: hidden;
+      transition: opacity 0.2s ease-in-out;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+
+    div.text {
+      display: grid;
+      grid-template-rows: 1fr;
+
+      .title {
+        font-size: 1.6em;
+      }
+      .description {
+        color: #aaa;
+      }
+    }
+
+    &:hover {
+      background-color: var(--c-main-hov);
+      color: #dedef7;
+    }
+  }
+}

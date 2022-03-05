@@ -1,0 +1,36 @@
+.footer {
+  display: flex;
+  color: #aaa;
+  justify-content: center;
+
+  .socials {
+    display: grid;
+    max-width: 600px;
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    gap: 1em;
+
+    div {
+      width: 1em;
+      height: 1em;
+      font-size: 1.3em;
+
+      a {
+        padding: 0.8em;
+        transition: background-color, color;
+        transition-timing-function: ease-in-out;
+        transition-duration: 0.2s;
+      }
+      a:hover {
+        color: #fff;
+      }
+
+      .icon {
+        width: 1em;
+        height: 1em;
+        font-size: inherit;
+      }
+    }
+  }
+}

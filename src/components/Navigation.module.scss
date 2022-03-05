@@ -1,0 +1,126 @@
+.navigation {
+  display: grid;
+  position: sticky;
+  top: 0;
+  min-width: 175px;
+  height: 100vh;
+  padding: 0;
+  background-color: var(--c-main-panel);
+
+  grid-template-rows: auto 1fr max-content;
+
+  transition: min-width, background-color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.2s;
+
+  &:is([data-min='true']) {
+    min-width: 0;
+    // background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.02);
+
+    &:hover {
+      background-color: var(--c-main-panel);
+
+      .navList {
+        opacity: 1;
+        pointer-events: unset;
+      }
+    }
+
+    .navList {
+      opacity: 0;
+      pointer-events: none;
+
+      .navItem {
+        grid-template-columns: 1fr;
+        justify-items: center;
+
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .header,
+  .footer {
+    text-align: center;
+  }
+  .header {
+    display: flex;
+    justify-content: center;
+
+    .logo {
+      width: 1em;
+      height: 1em;
+      font-size: 4em;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      img {
+        width: 1em;
+        height: 1em;
+        font-size: inherit;
+      }
+    }
+  }
+  .footer {
+    color: #aaa;
+    padding: 1em 0.6em;
+
+    .toggleMin {
+      margin: 1em 0;
+
+      button {
+        padding: 0.6em;
+        background-color: transparent;
+        border: none;
+
+        font-size: 1.2em;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        .icon {
+          width: 1em;
+          height: 1em;
+          font-size: inherit;
+        }
+      }
+    }
+  }
+
+  .navList {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(0, max-content));
+
+    transition: opacity;
+    transition-timing-function: ease-in-out;
+    transition-duration: 0.2s;
+
+    .navItem {
+      display: grid;
+      padding: 1em 1.3em;
+      grid-template-columns: max-content 1fr;
+      gap: 1em;
+      align-items: center;
+
+      transition: background-color, color;
+      transition-timing-function: ease-in-out;
+      transition-duration: 0.2s;
+
+      &:hover {
+        background-color: var(--c-main-hov);
+        color: #dedef7;
+        cursor: pointer;
+      }
+    }
+
+    div.socials {
+      margin: 1em 0;
+    }
+  }
+}

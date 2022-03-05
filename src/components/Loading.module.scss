@@ -1,0 +1,31 @@
+.label {
+  display: flex;
+  width: 100%;
+  height: calc(100% - 4em);
+  justify-content: center;
+  align-items: center;
+
+  div {
+    animation: loading 3s ease-in-out 1s infinite;
+
+    h1 {
+      margin: 0.3em 0;
+      font-weight: 100;
+    }
+  }
+}
+
+@keyframes loading {
+  0% {
+    color: #fff;
+    opacity: 100%;
+  }
+  50% {
+    color: #aaa;
+    opacity: 50%;
+  }
+  100% {
+    color: #fff;
+    opacity: 100%;
+  }
+}

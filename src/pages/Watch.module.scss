@@ -1,0 +1,228 @@
+.content {
+  opacity: 0;
+  animation: loadIn 0.3s ease-in 0.3s 1 forwards;
+}
+
+@keyframes loadIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.videoContainer {
+  background-color: var(--c-main-panel);
+  margin: 0.6em 0;
+  padding: 0.6em;
+  border-radius: 0.3em;
+  overflow: hidden;
+}
+
+.header {
+  margin: 0 0 0.6em 0;
+
+  h1 {
+    display: -webkit-box;
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 500;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    i.episode {
+      color: #aaa;
+      font-weight: 300;
+      font-style: normal;
+    }
+  }
+}
+
+.embed {
+  display: flex;
+  width: 100%;
+  background-color: #000;
+  justify-content: center;
+  border-radius: 0.3em;
+  overflow: hidden;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    max-width: 1280px;
+    max-height: 720px;
+    aspect-ratio: 16/9;
+    object-position: center;
+  }
+}
+
+.controls {
+  margin: 0.6em 0 0 0;
+
+  .episode {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    gap: 0.3em;
+
+    div button {
+      width: 100%;
+      padding: 0.3em;
+      background-color: var(--c-main-panel);
+      border: 0.3em solid transparent;
+      border-radius: 0.3em;
+
+      transition: background-color, color;
+      transition-timing-function: ease-in-out;
+      transition-duration: 0.2s;
+
+      &:hover:not(:disabled) {
+        background-color: var(--c-main);
+        color: #dedef7;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.episodesContainer {
+  display: grid;
+  grid-template-rows: max-content 1fr;
+
+  background-color: var(--c-main-panel);
+
+  border: 0.3em solid transparent;
+  border-radius: 0.3em;
+
+  .headerContent {
+    margin: 0;
+    padding: 0.3em;
+
+    h1 {
+      margin: 0;
+      font-size: 1.2em;
+      font-weight: 400;
+    }
+  }
+
+  .episodes {
+    display: flex;
+
+    padding: 0.3em;
+
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3em;
+
+    .episodeActive {
+      .episode {
+        background-color: var(--c-main-hov);
+        padding: 0.3em 0.6em;
+
+        border: 0.3em solid transparent;
+        border-radius: 0.3em;
+
+        transition: background-color, color;
+        transition-timing-function: ease-in-out;
+        transition-duration: 0.2s;
+
+        opacity: 0.3;
+      }
+    }
+    .episodeHref {
+      &:hover {
+        .episode {
+          background-color: var(--c-main-hov);
+          color: #dedef7;
+        }
+      }
+
+      .episode {
+        background-color: var(--c-main);
+        padding: 0.3em 0.6em;
+
+        border: 0.3em solid transparent;
+        border-radius: 0.3em;
+
+        transition: background-color, color;
+        transition-timing-function: ease-in-out;
+        transition-duration: 0.2s;
+      }
+    }
+  }
+}
+
+.details {
+  display: grid;
+  margin: 0.6em 0;
+  padding: 0.6em;
+  background-color: var(--c-main-panel);
+  grid-template-columns: max-content 1fr;
+  gap: 0.3em;
+  border-radius: 0.3em;
+
+  div.image {
+    display: inline-block;
+    border-radius: 0.3em;
+    overflow: hidden;
+    transition: opacity 0.2s ease-in-out;
+
+    img {
+      display: block;
+      width: 225px;
+      height: 350px;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  div.text {
+    display: grid;
+    max-height: 350px;
+    padding: 0 0 0 0.3em;
+
+    grid-template-rows: repeat(auto-fit, minmax(0, max-content));
+    justify-content: start;
+
+    span {
+      text-align: left;
+      word-break: break-all;
+    }
+    .title {
+      display: -webkit-box;
+      font-size: 1.6em;
+      font-weight: 400;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    span::before {
+      margin-right: 0.3em;
+      color: #aaa;
+    }
+    .episode::before {
+      content: 'Episodes';
+    }
+    .status::before {
+      content: 'Status';
+    }
+    .genres {
+      &::before {
+        content: 'Genres';
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    }
+    .summary {
+      max-width: 720px;
+      word-break: normal;
+      overflow: auto;
+      &::before {
+        content: 'Summary';
+      }
+    }
+  }
+}

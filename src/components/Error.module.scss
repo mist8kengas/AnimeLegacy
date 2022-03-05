@@ -1,0 +1,20 @@
+.label {
+  display: flex;
+  width: 100%;
+  height: calc(100% - 4em);
+  justify-content: center;
+  align-items: center;
+
+  div {
+    h1 {
+      margin: 0.3em 0;
+      font-weight: 100;
+
+      i {
+        color: #aaa;
+        font-weight: 400;
+        font-style: normal;
+      }
+    }
+  }
+}
