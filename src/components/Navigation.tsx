@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faAnglesLeft,
   faAnglesRight,
+  faBars,
   faFilm,
   faHome,
   faSearch,
@@ -60,6 +61,13 @@ export default function Navigation() {
             <div className={styles.navItem}>
               <FontAwesomeIcon icon={faSearch} />
               <span>Search</span>
+            </div>
+          </Link>
+
+          <Link to={'/list'} reloadDocument={true} title={'List'}>
+            <div className={styles.navItem}>
+              <FontAwesomeIcon icon={faBars} />
+              <span>List</span>
             </div>
           </Link>
 

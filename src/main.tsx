@@ -17,6 +17,7 @@ import Genre from './pages/Genre';
 import Genres from './pages/Genres';
 import Movies from './pages/Movies';
 import Search from './pages/Search';
+import List from './pages/List';
 import Random from './pages/Random';
 
 ReactDOM.render(
@@ -50,6 +51,7 @@ ReactDOM.render(
           <Route path={'/genres'} element={<Genres />} />
           <Route path={'/movies'} element={<Movies />} />
           <Route path={'/search'} element={<Search />} />
+          <Route path={'/list'} element={<List />} />
           <Route path={'/random'} element={<Random />} />
 
           {/* 404 */}
