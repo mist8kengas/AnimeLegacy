@@ -15,8 +15,9 @@ import Recent from './pages/Recent';
 import Watch from './pages/Watch';
 import Genre from './pages/Genre';
 import Genres from './pages/Genres';
-import Search from './pages/Search';
 import Movies from './pages/Movies';
+import Search from './pages/Search';
+import Random from './pages/Random';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -49,6 +50,7 @@ ReactDOM.render(
           <Route path={'/genres'} element={<Genres />} />
           <Route path={'/movies'} element={<Movies />} />
           <Route path={'/search'} element={<Search />} />
+          <Route path={'/random'} element={<Random />} />
 
           {/* 404 */}
           <Route

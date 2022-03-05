@@ -43,7 +43,7 @@ function MovieResult(init_list: string, page: number = 1) {
 
   // regular request
   useEffect(() => {
-    setReady(false);
+    if (result.list != list) setReady(false);
     axios
       .get(`${urls.api}/anime/list?page=${resultPage}&type=2&list=${list}`)
       .then((response: AxiosResponse<GogoMovie>) => {

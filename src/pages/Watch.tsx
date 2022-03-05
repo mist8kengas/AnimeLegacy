@@ -109,9 +109,6 @@ export default function Watch() {
         }),
     []
   );
-  useEffect(() => {
-    console.log(slugEpisode);
-  }, []);
 
   // get details
   useEffect(
@@ -122,7 +119,6 @@ export default function Watch() {
           const { data } = response;
           if (!data || !data.result) return;
 
-          console.log('info', data);
           setDetails(data);
           // setReady(true);
         }),
@@ -235,18 +231,17 @@ export default function Watch() {
             </span>
             <span className={styles.genres}>
               {details.result.genres.map((genre, i) => (
-                <>
+                <span key={i}>
                   <Link
                     to={generatePath('/genre/:genre', {
                       genre: genre[1],
                     })}
-                    key={i}
                     title={genre[0]}
                   >
                     {genre[0]}
                   </Link>
                   {details.result.genres.length - 1 > i && ', '}
-                </>
+                </span>
               ))}
             </span>
             <span className={styles.summary}>{details.result.summary}</span>
@@ -265,6 +260,7 @@ export default function Watch() {
                   <div
                     className={styles.episodeActive}
                     title={'Current episode'}
+                    key={i}
                   >
                     <div className={styles.episode}>
                       <div className={styles.text}>
@@ -273,24 +269,25 @@ export default function Watch() {
                     </div>
                   </div>
                 );
-              return (
-                <Link
-                  className={styles.episodeHref}
-                  to={generatePath('/watch/:slug/:episode', {
-                    slug,
-                    episode: `episode-${i + 1}`,
-                  })}
-                  target={'_parent'}
-                  title={`Watch ${details.result.name[0]} Episode ${i + 1}`}
-                  key={i}
-                >
-                  <div className={styles.episode}>
-                    <div className={styles.text}>
-                      <span>{i + 1}</span>
+              else
+                return (
+                  <Link
+                    className={styles.episodeHref}
+                    to={generatePath('/watch/:slug/:episode', {
+                      slug,
+                      episode: `episode-${i + 1}`,
+                    })}
+                    target={'_parent'}
+                    title={`Watch ${details.result.name[0]} Episode ${i + 1}`}
+                    key={i}
+                  >
+                    <div className={styles.episode}>
+                      <div className={styles.text}>
+                        <span>{i + 1}</span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              );
+                  </Link>
+                );
             })}
           </div>
         </div>

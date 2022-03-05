@@ -8,6 +8,7 @@ import {
   faFilm,
   faHome,
   faSearch,
+  faShuffle,
   faTheaterMasks,
 } from '@fortawesome/free-solid-svg-icons';
 import { faDiscord, faYoutube } from '@fortawesome/free-brands-svg-icons';
@@ -59,6 +60,13 @@ export default function Navigation() {
             <div className={styles.navItem}>
               <FontAwesomeIcon icon={faSearch} />
               <span>Search</span>
+            </div>
+          </Link>
+
+          <Link to={'/random'} reloadDocument={true} title={'Random'}>
+            <div className={styles.navItem}>
+              <FontAwesomeIcon icon={faShuffle} />
+              <span>Random</span>
             </div>
           </Link>
 
