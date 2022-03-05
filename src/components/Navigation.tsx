@@ -58,6 +58,7 @@ export default function Navigation() {
           <div className={styles.socials}>
             <Link
               to={{ pathname: '//discord.gg/NgBG7sh42w' }}
+              target={'_blank'}
               title={'Discord server'}
             >
               <div className={styles.navItem}>
@@ -70,6 +71,7 @@ export default function Navigation() {
               to={{
                 pathname: '//youtube.com/channel/UCX9wKHtN2sHCx50h9lDvTGQ',
               }}
+              target={'_blank'}
               title={'YouTube channel'}
             >
               <div className={styles.navItem}>

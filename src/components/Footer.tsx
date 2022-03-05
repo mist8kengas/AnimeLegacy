@@ -9,15 +9,12 @@ export default function Footer() {
   return (
     <footer>
       <div className={styles.footer}>
-        {/* <div className={styles.title}>
-          <span>AnimeLegacy {new Date().getFullYear()}</span>
-        </div> */}
-
         <div className={styles.socials}>
           <BrowserRouter>
             <div>
               <Link
                 to={{ pathname: '//discord.gg/NgBG7sh42w' }}
+                target={'_blank'}
                 title={'Discord server'}
               >
                 <FontAwesomeIcon className={styles.icon} icon={faDiscord} />
@@ -29,6 +26,7 @@ export default function Footer() {
                 to={{
                   pathname: '//youtube.com/channel/UCX9wKHtN2sHCx50h9lDvTGQ',
                 }}
+                target={'_blank'}
                 title={'YouTube channel'}
               >
                 <FontAwesomeIcon className={styles.icon} icon={faYoutube} />
