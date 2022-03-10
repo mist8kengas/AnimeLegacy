@@ -54,6 +54,12 @@ interface GogoDetails extends GogoResponse {
   };
 }
 
+declare global {
+  interface Window {
+    hcb_user: any;
+  }
+}
+
 export default function Watch() {
   const { slug, episode } = useParams();
   const slugEpisode = slug + '-' + episode;
@@ -125,7 +131,24 @@ export default function Watch() {
     []
   );
 
-  if (ready)
+  if (ready) {
+    // set html comment box
+    (() => {
+      if (!window.hcb_user) window.hcb_user = { PAGE: btoa(slugEpisode || '') };
+      const hcbScript = document.createElement('script');
+      hcbScript.setAttribute('type', 'text/javascript');
+      hcbScript.setAttribute(
+        'src',
+        'https://www.htmlcommentbox.com/jread?page=' +
+          encodeURIComponent(
+            window.hcb_user.PAGE || ('' + window.location).replace(/'/g, '%27')
+          ).replace('+', '%2B') +
+          '&mod=%241%24wq1rdBcg%24whhuJsOZfGV3ZJxzYyLiR%2F' +
+          '&opts=16798&num=10&ts=1646597561508'
+      );
+      document.getElementsByTagName('head')[0].appendChild(hcbScript);
+    })();
+
     return (
       <div className={styles.content}>
         <div className={styles.videoContainer}>
@@ -291,7 +314,21 @@ export default function Watch() {
             })}
           </div>
         </div>
+
+        <div className={styles.comments}>
+          <div className={styles.headerContent}>
+            <h1>Comments</h1>
+          </div>
+
+          <div id='HCB_comment_box'>Comment Box is loading...</div>
+          <link
+            rel='stylesheet'
+            type='text/css'
+            href='https://www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0'
+          />
+          <script type='text/javascript' id='hcb' />
+        </div>
       </div>
     );
-  else return <Loading />;
+  } else return <Loading />;
 }
