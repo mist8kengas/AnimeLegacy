@@ -56,6 +56,18 @@ function App() {
 
   const [render, setRender] = useState(0);
 
+  // recently watched
+  interface RecentlyWatchedNode {
+    name: string;
+    slug: string;
+    image: string;
+    type: 'sub' | 'dub';
+    date_added: number;
+  }
+  const recentlyWatched: RecentlyWatchedNode[] = JSON.parse(
+    window.localStorage.getItem('al-rw0') || '[]'
+  );
+
   // regular request
   useEffect(
     () =>
@@ -178,6 +190,71 @@ function App() {
 
         <div className={styles.content}>
           <div>
+            {/* recently watched */}
+            {!!(recentlyWatched || []).length && (
+              <div>
+                <div className={styles.header}>
+                  <h1>Recently Watched</h1>
+                </div>
+
+                <div className={styles.rwContent}>
+                  {recentlyWatched
+                    .sort((x, y) => (x.date_added > y.date_added && -1) || 0)
+                    .map((node, i) => {
+                      const { name, slug, image } = node;
+                      const [, episode] =
+                        /(?:.*)-episode-(.*)$/.exec(slug) || [];
+
+                      if (!slug) {
+                        console.warn(
+                          '[Recent.tsx]',
+                          'ID for',
+                          slug,
+                          'is undefined'
+                        );
+                        return;
+                      }
+
+                      const watchHref = `/watch/${slug}/episode-${episode}`;
+                      return (
+                        <Link
+                          className={styles.hrefNode}
+                          to={watchHref}
+                          key={i}
+                        >
+                          <div
+                            className={styles.recentNode}
+                            title={`Watch ${name} Episode ${episode}`}
+                          >
+                            <div className={styles.image}>
+                              <img
+                                src={image}
+                                alt={name}
+                                loading={recentPage > 1 ? 'lazy' : 'eager'}
+                              />
+                              <div
+                                className={styles.type}
+                                data-type={node.type}
+                              >
+                                <span>{node.type.toUpperCase()}</span>
+                              </div>
+                            </div>
+                            <div className={styles.text}>
+                              <span className={styles.title} title={name}>
+                                {name}
+                              </span>
+                              <span className={styles.episode}>
+                                Episode {episode}
+                              </span>
+                            </div>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                </div>
+              </div>
+            )}
+
             {/* trending */}
             <div>
               <div className={styles.header}>

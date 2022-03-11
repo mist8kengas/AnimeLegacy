@@ -54,6 +54,14 @@ interface GogoDetails extends GogoResponse {
   };
 }
 
+interface RecentlyWatchedNode {
+  name: string;
+  slug: string;
+  image: string;
+  type: 'sub' | 'dub';
+  date_added: number;
+}
+
 declare global {
   interface Window {
     hcb_user: any;
@@ -148,6 +156,35 @@ export default function Watch() {
       );
       document.getElementsByTagName('head')[0].appendChild(hcbScript);
     })();
+
+    // add to recently watched
+    if ('localStorage' in window)
+      (() => {
+        if (!details.result.name[0]) return;
+        const recent: RecentlyWatchedNode = {
+          name: details.result.name[0],
+          slug: slugEpisode,
+          image: data.result.image,
+          type: data.result.type,
+          date_added: ~~(Date.now() / 1e3),
+        };
+
+        const recentlyWatched = JSON.parse(
+          window.localStorage.getItem('al-rw0') || '[]'
+        );
+        if (
+          recentlyWatched
+            .map((i: RecentlyWatchedNode) => i.slug)
+            .indexOf(recent.slug) === -1
+        ) {
+          recentlyWatched.push(recent);
+          if (recentlyWatched.length > 10) recentlyWatched.shift();
+          window.localStorage.setItem(
+            'al-rw0',
+            JSON.stringify(recentlyWatched)
+          );
+        }
+      })();
 
     return (
       <div className={styles.content}>
