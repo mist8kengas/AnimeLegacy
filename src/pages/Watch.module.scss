@@ -139,6 +139,12 @@
         }
       }
 
+      &:visited {
+        .episode {
+          background-color: #3037c5;
+        }
+      }
+
       .episode {
         background-color: var(--c-main);
         padding: 0.3em 0.6em;
