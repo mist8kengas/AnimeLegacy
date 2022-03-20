@@ -11,8 +11,13 @@ import {
   faSearch,
   faShuffle,
   faTheaterMasks,
+  faCalendar,
 } from '@fortawesome/free-solid-svg-icons';
-import { faDiscord, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import {
+  faDiscord,
+  faTwitter,
+  faYoutube,
+} from '@fortawesome/free-brands-svg-icons';
 
 import { BrowserRouter, Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -54,6 +59,13 @@ export default function Navigation() {
             <div className={styles.navItem}>
               <FontAwesomeIcon icon={faFilm} />
               <span>Movies</span>
+            </div>
+          </Link>
+
+          <Link to={'/schedule'} reloadDocument={true} title={'Schedule'}>
+            <div className={styles.navItem}>
+              <FontAwesomeIcon icon={faCalendar} />
+              <span>Schedule</span>
             </div>
           </Link>
 
@@ -103,6 +115,19 @@ export default function Navigation() {
                 <span>YouTube</span>
               </div>
             </Link>
+
+            <Link
+              to={{
+                pathname: '//twitter.com/uzi79983022',
+              }}
+              target={'_blank'}
+              title={'Twitter'}
+            >
+              <div className={styles.navItem}>
+                <FontAwesomeIcon icon={faTwitter} />
+                <span>Twitter</span>
+              </div>
+            </Link>
           </div>
         </BrowserRouter>
       </div>
@@ -121,7 +146,7 @@ export default function Navigation() {
         </div>
 
         <span>
-          <code>v1.0.0</code>
+          <code>v1.3.0</code>
         </span>
       </div>
     </div>

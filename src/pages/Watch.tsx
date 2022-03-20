@@ -49,6 +49,7 @@ interface GogoDetails extends GogoResponse {
     episodes: number;
     image: string;
     status: string;
+    released: number;
     genres: GogoGenre[];
     summary: string;
   };
@@ -57,6 +58,8 @@ interface GogoDetails extends GogoResponse {
 interface RecentlyWatchedNode {
   name: string;
   slug: string;
+  episode: number;
+  slugEpisode: string;
   image: string;
   type: 'sub' | 'dub';
   date_added: number;
@@ -70,7 +73,8 @@ declare global {
 
 export default function Watch() {
   const { slug, episode } = useParams();
-  const slugEpisode = slug + '-' + episode;
+  const fixedSlug = slug?.replace(/-tv-$/, '');
+  const slugEpisode = fixedSlug + '-' + episode;
 
   const [data, setData] = useState<GogoData>({
     request: {
@@ -103,11 +107,18 @@ export default function Watch() {
       episodes: 0,
       image: '',
       status: '',
+      released: 0,
       genres: [],
       summary: '',
     },
   });
   const [ready, setReady] = useState(false);
+
+  const [malDetails, setMalDetails] = useState({
+    score: 0,
+    rating: '',
+    url: '',
+  });
 
   // get content
   useEffect(
@@ -125,19 +136,31 @@ export default function Watch() {
   );
 
   // get details
-  useEffect(
-    () =>
-      void axios
-        .get(`${urls.api}/anime/info/${slug}`)
-        .then((response: AxiosResponse<GogoDetails>) => {
-          const { data } = response;
-          if (!data || !data.result) return;
+  useEffect(() => {
+    axios
+      .get(`${urls.api}/anime/info/${slug}`)
+      .then(async (response: AxiosResponse<GogoDetails>) => {
+        const { data } = response;
+        if (!data || !data.result) return;
 
-          setDetails(data);
-          // setReady(true);
-        }),
-    []
-  );
+        const malDetailsURL = new URL(
+          'https://jikan-api.animeonsen.xyz/v3/search/anime'
+        );
+        malDetailsURL.searchParams.set('limit', '1');
+        malDetailsURL.searchParams.set('q', data.result.name[0]);
+        const malDetailsReq = await axios.get(malDetailsURL.href);
+
+        const [detail] = malDetailsReq.data.results;
+        const { score, rated, url } = detail;
+        setMalDetails({ score, rating: rated, url });
+
+        setDetails(data);
+        // setReady(true);
+      });
+  }, []);
+
+  const [episodeChunk, setEpisodeChunk] = useState(0);
+  var lastChunk = 0;
 
   if (ready) {
     // set html comment box
@@ -163,7 +186,9 @@ export default function Watch() {
         if (!details.result.name[0]) return;
         const recent: RecentlyWatchedNode = {
           name: details.result.name[0],
-          slug: slugEpisode,
+          slug: slug || '',
+          episode: data.result.episode,
+          slugEpisode: slugEpisode,
           image: data.result.image,
           type: data.result.type,
           date_added: ~~(Date.now() / 1e3),
@@ -172,10 +197,11 @@ export default function Watch() {
         const recentlyWatched = JSON.parse(
           window.localStorage.getItem('al-rw0') || '[]'
         );
+
         if (
           recentlyWatched
-            .map((i: RecentlyWatchedNode) => i.slug)
-            .indexOf(recent.slug) === -1
+            .map((i: RecentlyWatchedNode) => i.slugEpisode)
+            .indexOf(recent.slugEpisode) === -1
         ) {
           recentlyWatched.push(recent);
           if (recentlyWatched.length > 10) recentlyWatched.shift();
@@ -289,6 +315,11 @@ export default function Watch() {
                 ? 'Finished Airing'
                 : 'Airing'}
             </span>
+            <span className={styles.released}>{details.result.released}</span>
+
+            <span className={styles.score}>{malDetails.score}</span>
+            <span className={styles.rating}>{malDetails.rating}</span>
+
             <span className={styles.genres}>
               {details.result.genres.map((genre, i) => (
                 <span key={i}>
@@ -305,6 +336,16 @@ export default function Watch() {
               ))}
             </span>
             <span className={styles.summary}>{details.result.summary}</span>
+
+            <span className={styles.viewMal}>
+              <a
+                href={malDetails.url}
+                target={'_blank'}
+                title={'View on MyAnimeList'}
+              >
+                View on MyAnimeList
+              </a>
+            </span>
           </div>
         </div>
 
@@ -314,41 +355,87 @@ export default function Watch() {
           </div>
 
           <div className={styles.episodes}>
-            {new Array(details.result.episodes).fill(true).map((_, i) => {
-              if (+(episode?.split('episode-')[1] || '1') == i + 1)
-                return (
-                  <div
-                    className={styles.episodeActive}
-                    title={'Current episode'}
-                    key={i}
-                  >
-                    <div className={styles.episode}>
-                      <div className={styles.text}>
-                        <span>{i + 1}</span>
+            <div className={styles.episodeChunks}>
+              {details.result.episodes < 100 ? (
+                <button className={styles.chunk} disabled={true}>
+                  <span>0 - {details.result.episodes}</span>
+                </button>
+              ) : (
+                new Array(details.result.episodes).fill(true).map((_, i) => {
+                  // split into chunks of 100 size max
+                  if (i % 100 === 0 && i != 0)
+                    return (
+                      <button
+                        className={styles.chunk}
+                        onClick={() => {
+                          setEpisodeChunk(i);
+                          console.log(i - 100, i);
+                        }}
+                        key={i}
+                        disabled={episodeChunk === i}
+                      >
+                        <span>
+                          {lastChunk} -{' '}
+                          {i + 100 > details.result.episodes
+                            ? details.result.episodes
+                            : i}
+                        </span>
+                        {(() => {
+                          lastChunk =
+                            i + 100 > details.result.episodes
+                              ? details.result.episodes
+                              : i;
+                        })()}
+                      </button>
+                    );
+                })
+              )}
+            </div>
+
+            <div className={styles.episodeButtons}>
+              {new Array(details.result.episodes).fill(true).map((_, i) => {
+                if (i < episodeChunk - 100 || i > episodeChunk) {
+                  if (
+                    i < episodeChunk ||
+                    episodeChunk + 100 < details.result.episodes
+                  )
+                    return;
+                }
+                if (+(episode?.split('episode-')[1] || '1') == i + 1)
+                  return (
+                    <div
+                      className={styles.episodeActive}
+                      title={'Current episode'}
+                      key={i}
+                    >
+                      <div className={styles.episode}>
+                        <div className={styles.text}>
+                          <span>{i + 1}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              else
-                return (
-                  <Link
-                    className={styles.episodeHref}
-                    to={generatePath('/watch/:slug/:episode', {
-                      slug,
-                      episode: `episode-${i + 1}`,
-                    })}
-                    target={'_parent'}
-                    title={`Watch ${details.result.name[0]} Episode ${i + 1}`}
-                    key={i}
-                  >
-                    <div className={styles.episode}>
-                      <div className={styles.text}>
-                        <span>{i + 1}</span>
+                  );
+                else
+                  return (
+                    <Link
+                      className={styles.episodeHref}
+                      to={generatePath('/watch/:slug/:episode', {
+                        slug,
+                        episode: `episode-${i + 1}`,
+                      })}
+                      target={'_parent'}
+                      title={`Watch ${details.result.name[0]} Episode ${i + 1}`}
+                      key={i}
+                    >
+                      <div className={styles.episode}>
+                        <div className={styles.text}>
+                          <span>{i + 1}</span>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                );
-            })}
+                    </Link>
+                  );
+              })}
+            </div>
           </div>
         </div>
 

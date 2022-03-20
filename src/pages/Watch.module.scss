@@ -107,19 +107,18 @@
   }
 
   .episodes {
-    display: flex;
+    display: grid;
+    grid-template-rows: max-content 1fr;
+    justify-items: center;
+    gap: 1em;
 
-    padding: 0.3em;
+    .episodeChunks {
+      display: flex;
+      gap: 0.3em;
 
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.3em;
-
-    .episodeActive {
-      .episode {
-        background-color: var(--c-main-hov);
-        padding: 0.3em 0.6em;
+      .chunk {
+        background-color: var(--c-main);
+        padding: 0.1em 0.6em;
 
         border: 0.3em solid transparent;
         border-radius: 0.3em;
@@ -128,33 +127,68 @@
         transition-timing-function: ease-in-out;
         transition-duration: 0.2s;
 
-        opacity: 0.3;
-      }
-    }
-    .episodeHref {
-      &:hover {
-        .episode {
+        &:hover {
           background-color: var(--c-main-hov);
           color: #dedef7;
+          cursor: pointer;
+        }
+
+        &:disabled {
+          pointer-events: none;
         }
       }
+    }
 
-      &:visited {
+    .episodeButtons {
+      display: flex;
+
+      padding: 0.3em;
+
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.3em;
+
+      .episodeActive {
         .episode {
-          background-color: #3037c5;
+          background-color: var(--c-main-hov);
+          padding: 0.3em 0.6em;
+
+          border: 0.3em solid transparent;
+          border-radius: 0.3em;
+
+          transition: background-color, color;
+          transition-timing-function: ease-in-out;
+          transition-duration: 0.2s;
+
+          opacity: 0.3;
         }
       }
+      .episodeHref {
+        &:hover {
+          .episode {
+            background-color: var(--c-main-hov);
+            color: #dedef7;
+          }
+        }
 
-      .episode {
-        background-color: var(--c-main);
-        padding: 0.3em 0.6em;
+        &:visited {
+          .episode {
+            background-color: #3037c5;
+          }
+        }
 
-        border: 0.3em solid transparent;
-        border-radius: 0.3em;
+        .episode {
+          background-color: var(--c-main);
+          padding: 0.3em 0.6em;
 
-        transition: background-color, color;
-        transition-timing-function: ease-in-out;
-        transition-duration: 0.2s;
+          border: 0.3em solid transparent;
+          border-radius: 0.3em;
+
+          transition: background-color, color;
+          transition-timing-function: ease-in-out;
+          transition-duration: 0.2s;
+        }
       }
     }
   }
@@ -222,12 +256,34 @@
         text-decoration: underline;
       }
     }
+    .released {
+      &::before {
+        content: 'Released';
+      }
+    }
+    .score {
+      &::before {
+        content: 'Score';
+      }
+    }
+    .rating {
+      &::before {
+        content: 'Rating';
+      }
+    }
     .summary {
       max-width: 720px;
       word-break: normal;
       overflow: auto;
       &::before {
         content: 'Summary';
+      }
+    }
+    .viewMal {
+      margin: 1.2em 0;
+
+      a:hover {
+        text-decoration: underline;
       }
     }
   }

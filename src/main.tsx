@@ -16,6 +16,7 @@ import Watch from './pages/Watch';
 import Genre from './pages/Genre';
 import Genres from './pages/Genres';
 import Movies from './pages/Movies';
+import Schedule from './pages/Schedule';
 import Search from './pages/Search';
 import List from './pages/List';
 import Random from './pages/Random';
@@ -50,6 +51,7 @@ ReactDOM.render(
           <Route path={'/genre/:genre'} element={<Genre />} />
           <Route path={'/genres'} element={<Genres />} />
           <Route path={'/movies'} element={<Movies />} />
+          <Route path={'/schedule'} element={<Schedule />} />
           <Route path={'/search'} element={<Search />} />
           <Route path={'/list'} element={<List />} />
           <Route path={'/random'} element={<Random />} />

@@ -60,6 +60,8 @@ function App() {
   interface RecentlyWatchedNode {
     name: string;
     slug: string;
+    episode: number;
+    slugEpisode: string;
     image: string;
     type: 'sub' | 'dub';
     date_added: number;
@@ -201,9 +203,7 @@ function App() {
                   {recentlyWatched
                     .sort((x, y) => (x.date_added > y.date_added && -1) || 0)
                     .map((node, i) => {
-                      const { name, slug, image } = node;
-                      const [, episode] =
-                        /(?:.*)-episode-(.*)$/.exec(slug) || [];
+                      const { name, slug, episode, image } = node;
 
                       if (!slug) {
                         console.warn(

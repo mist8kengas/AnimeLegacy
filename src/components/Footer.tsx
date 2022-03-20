@@ -2,7 +2,11 @@ import styles from './Footer.module.scss';
 
 // fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDiscord, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import {
+  faDiscord,
+  faTwitter,
+  faYoutube,
+} from '@fortawesome/free-brands-svg-icons';
 import { BrowserRouter, Link } from 'react-router-dom';
 
 export default function Footer() {
@@ -30,6 +34,18 @@ export default function Footer() {
                 title={'YouTube channel'}
               >
                 <FontAwesomeIcon className={styles.icon} icon={faYoutube} />
+              </Link>
+            </div>
+
+            <div>
+              <Link
+                to={{
+                  pathname: '//twitter.com/uzi79983022',
+                }}
+                target={'_blank'}
+                title={'Twitter'}
+              >
+                <FontAwesomeIcon className={styles.icon} icon={faTwitter} />
               </Link>
             </div>
           </BrowserRouter>
