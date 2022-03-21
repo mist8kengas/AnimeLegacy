@@ -60,7 +60,7 @@ function CountdownContent(
     else return days + ' Days';
   }
 
-  const airDelay = 120960; // gogoanime delay
+  const airDelay = 0; // gogoanime delay (120960)
   const hoursIn = msToTime(Date.now() - (airs_in + airDelay) * 1e3);
   const willAir = (airs_in + airDelay) * 1e3 < Date.now(); // 216e5
 
