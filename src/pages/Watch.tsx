@@ -159,7 +159,9 @@ export default function Watch() {
       });
   }, []);
 
-  const [episodeChunk, setEpisodeChunk] = useState(0);
+  const [episodeChunk, setEpisodeChunk] = useState(
+    details.result.episodes > 100 ? 100 : 0
+  );
   var lastChunk = 0;
 
   if (ready) {
@@ -367,10 +369,7 @@ export default function Watch() {
                     return (
                       <button
                         className={styles.chunk}
-                        onClick={() => {
-                          setEpisodeChunk(i);
-                          console.log(i - 100, i);
-                        }}
+                        onClick={() => setEpisodeChunk(i)}
                         key={i}
                         disabled={episodeChunk === i}
                       >
