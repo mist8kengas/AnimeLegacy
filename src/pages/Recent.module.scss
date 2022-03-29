@@ -272,8 +272,43 @@ $node-width: calc($image-width + 0.3em * 2);
 
 .top {
   .header {
-    select {
-      margin-left: 0.1em;
+    .radioDate {
+      margin: 0.3em 0;
+
+      form {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: center;
+        gap: 0.6em;
+
+        label {
+          display: grid;
+          grid-template-columns: max-content 1fr;
+          align-items: center;
+          gap: 0.3em;
+
+          background-color: var(--c-main-panel);
+
+          padding: 0.1em 0.3em;
+
+          font-size: 0.6em;
+
+          border: 0.3em solid transparent;
+          border-radius: 0.3em;
+
+          transition: 0.3s background-color ease-in-out;
+
+          input[type='radio'] {
+            &:checked {
+              background-color: red;
+            }
+          }
+
+          &:is([data-active='true']) {
+            background-color: var(--c-main);
+          }
+        }
+      }
     }
   }
 }
@@ -390,3 +425,4 @@ $node-width: calc($image-width + 0.3em * 2);
     }
   }
 }
+

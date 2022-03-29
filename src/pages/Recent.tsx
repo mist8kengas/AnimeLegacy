@@ -395,13 +395,51 @@ function App() {
               <div className={styles.header}>
                 <h1>
                   Top Anime
-                  <select onChange={(e) => setTopTime(e.target.value)}>
-                    <option value={'day'} defaultChecked={true}>
-                      Today
-                    </option>
-                    <option value={'week'}>This Week</option>
-                    <option value={'month'}>This Month</option>
-                  </select>
+                  <div className={styles.radioDate}>
+                    <form
+                      onInput={(e: any) => {
+                        const target: HTMLInputElement = e.target;
+                        setTopTime(target.value);
+                      }}
+                    >
+                      <label htmlFor={'d-date'} data-active={topTime === 'day'}>
+                        <input
+                          type={'radio'}
+                          id={'d-date'}
+                          name={'date'}
+                          value={'day'}
+                          defaultChecked={true}
+                        />
+                        <span>Today</span>
+                      </label>
+
+                      <label
+                        htmlFor={'d-week'}
+                        data-active={topTime === 'week'}
+                      >
+                        <input
+                          type={'radio'}
+                          id={'d-week'}
+                          name={'date'}
+                          value={'week'}
+                        />
+                        <span>Week</span>
+                      </label>
+
+                      <label
+                        htmlFor={'d-month'}
+                        data-active={topTime === 'month'}
+                      >
+                        <input
+                          type={'radio'}
+                          id={'d-month'}
+                          name={'date'}
+                          value={'month'}
+                        />
+                        <span>Month</span>
+                      </label>
+                    </form>
+                  </div>
                 </h1>
               </div>
 
@@ -446,3 +484,4 @@ function App() {
 }
 
 export default App;
+
