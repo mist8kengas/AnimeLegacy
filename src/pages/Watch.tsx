@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { generatePath, Link, useParams } from 'react-router-dom';
 import styles from './Watch.module.scss';
 
@@ -69,6 +69,19 @@ declare global {
   interface Window {
     hcb_user: any;
   }
+}
+
+interface GogoRecentNode {
+  name: string;
+  slug: string;
+  episode: number;
+  image: string;
+}
+interface GogoTrendingNode extends GogoRecentNode {
+  type: 'sub' | 'dub';
+}
+interface GogoRecent extends GogoResponse {
+  result: GogoRecentNode[] | GogoTrendingNode[];
 }
 
 export default function Watch() {
@@ -164,6 +177,18 @@ export default function Watch() {
   );
   var lastChunk = 0;
 
+  // trending section
+  const [trendingData, setTrendingData] = useState(new Array());
+  useMemo(() => {
+    return void axios
+      .get(`${urls.api}/anime/top/month`)
+      .then((response: AxiosResponse<GogoRecent>) => {
+        const { data } = response;
+        if (!data) return;
+        setTrendingData(data.result);
+      });
+  }, []);
+
   if (ready) {
     // set html comment box
     (() => {
@@ -216,240 +241,280 @@ export default function Watch() {
 
     return (
       <div className={styles.content}>
-        <div className={styles.videoContainer}>
-          <div className={styles.header}>
-            <h1>
-              {/* data.result.name */}
-              {(/(.*)(?: Episode(.*))/.exec(data.result.name) || [])[1]}
-              &nbsp;
-              <i className={styles.episode}>
-                Episode {episode?.split('episode-')[1]}
-              </i>
-            </h1>
-          </div>
+        <div className={styles.mainContent}>
+          <div className={styles.videoContainer}>
+            <div className={styles.header}>
+              <h1>
+                {/* data.result.name */}
+                {(/(.*)(?: Episode(.*))/.exec(data.result.name) || [])[1]}
+                &nbsp;
+                <i className={styles.episode}>
+                  Episode {episode?.split('episode-')[1]}
+                </i>
+              </h1>
+            </div>
 
-          <div className={styles.embed}>
-            <iframe
-              src={data.result.video?.anime.url}
-              frameBorder={0}
-              scrolling={'no'}
-              allowFullScreen={true}
-            />
-          </div>
+            <div className={styles.embed}>
+              <iframe
+                src={data.result.video?.anime.url}
+                frameBorder={0}
+                scrolling={'no'}
+                allowFullScreen={true}
+              />
+            </div>
 
-          <div className={styles.controls}>
-            <div className={styles.episode}>
-              <div>
-                {(data.result.slug.previous && (
-                  <Link
-                    to={generatePath('/watch/:slug/:episode', {
-                      slug,
-                      episode: `episode-${data.result.episode - 1}`,
-                    })}
-                    target={'_parent'}
-                  >
-                    <button>
-                      <span>Previous</span>
-                    </button>
-                  </Link>
-                )) || (
-                  <button disabled={!data.result.slug.previous}>
-                    <span>Previous</span>
-                  </button>
-                )}
-              </div>
-
-              <div>
-                {(data.result.slug.next && (
-                  <Link
-                    to={generatePath('/watch/:slug/:episode', {
-                      slug,
-                      episode: `episode-${data.result.episode + 1}`,
-                    })}
-                    target={'_parent'}
-                  >
-                    <button>
-                      <span>Next</span>
-                    </button>
-                  </Link>
-                )) || (
-                  <button disabled={!data.result.slug.next}>
-                    <span>Next</span>
-                  </button>
-                )}
-              </div>
-
-              <div>
-                {+(episode?.split('episode-')[1] || '1') <
-                  details.result.episodes &&
-                  +(episode?.split('episode-')[1] || '1') !==
-                    details.result.episodes - 1 && (
+            <div className={styles.controls}>
+              <div className={styles.episode}>
+                <div>
+                  {(data.result.slug.previous && (
                     <Link
                       to={generatePath('/watch/:slug/:episode', {
                         slug,
-                        episode: `episode-${details.result.episodes}`,
+                        episode: `episode-${data.result.episode - 1}`,
                       })}
                       target={'_parent'}
                     >
                       <button>
-                        <span>Latest</span>
+                        <span>Previous</span>
                       </button>
                     </Link>
+                  )) || (
+                    <button disabled={!data.result.slug.previous}>
+                      <span>Previous</span>
+                    </button>
                   )}
+                </div>
+
+                <div>
+                  {(data.result.slug.next && (
+                    <Link
+                      to={generatePath('/watch/:slug/:episode', {
+                        slug,
+                        episode: `episode-${data.result.episode + 1}`,
+                      })}
+                      target={'_parent'}
+                    >
+                      <button>
+                        <span>Next</span>
+                      </button>
+                    </Link>
+                  )) || (
+                    <button disabled={!data.result.slug.next}>
+                      <span>Next</span>
+                    </button>
+                  )}
+                </div>
+
+                <div>
+                  {+(episode?.split('episode-')[1] || '1') <
+                    details.result.episodes &&
+                    +(episode?.split('episode-')[1] || '1') !==
+                      details.result.episodes - 1 && (
+                      <Link
+                        to={generatePath('/watch/:slug/:episode', {
+                          slug,
+                          episode: `episode-${details.result.episodes}`,
+                        })}
+                        target={'_parent'}
+                      >
+                        <button>
+                          <span>Latest</span>
+                        </button>
+                      </Link>
+                    )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className={styles.details}>
-          <div className={styles.image}>
-            <img src={details.result.image} width={225} height={350} />
-          </div>
-          <div className={styles.text}>
-            <span className={styles.title} title={details.result.name[0]}>
-              {details.result.name[0]}
-            </span>
-            <span className={styles.episode}>
-              {episode?.split('episode-')[1]} / {details.result.episodes}
-            </span>
-            <span className={styles.status}>
-              {details.result.status === 'completed'
-                ? 'Finished Airing'
-                : 'Airing'}
-            </span>
-            <span className={styles.released}>{details.result.released}</span>
+          <div className={styles.details}>
+            <div className={styles.image}>
+              <img src={details.result.image} width={225} height={350} />
+            </div>
+            <div className={styles.text}>
+              <span className={styles.title} title={details.result.name[0]}>
+                {details.result.name[0]}
+              </span>
+              <span className={styles.episode}>
+                {episode?.split('episode-')[1]} / {details.result.episodes}
+              </span>
+              <span className={styles.status}>
+                {details.result.status === 'completed'
+                  ? 'Finished Airing'
+                  : 'Airing'}
+              </span>
+              <span className={styles.released}>{details.result.released}</span>
 
-            <span className={styles.score}>{malDetails.score}</span>
-            <span className={styles.rating}>{malDetails.rating}</span>
+              <span className={styles.score}>{malDetails.score}</span>
+              <span className={styles.rating}>{malDetails.rating}</span>
 
-            <span className={styles.genres}>
-              {details.result.genres.map((genre, i) => (
-                <span key={i}>
-                  <Link
-                    to={generatePath('/genre/:genre', {
-                      genre: genre[1],
-                    })}
-                    title={genre[0]}
-                  >
-                    {genre[0]}
-                  </Link>
-                  {details.result.genres.length - 1 > i && ', '}
-                </span>
-              ))}
-            </span>
-            <span className={styles.summary}>{details.result.summary}</span>
+              <span className={styles.genres}>
+                {details.result.genres.map((genre, i) => (
+                  <span key={i}>
+                    <Link
+                      to={generatePath('/genre/:genre', {
+                        genre: genre[1],
+                      })}
+                      title={genre[0]}
+                    >
+                      {genre[0]}
+                    </Link>
+                    {details.result.genres.length - 1 > i && ', '}
+                  </span>
+                ))}
+              </span>
+              <span className={styles.summary}>{details.result.summary}</span>
 
-            <span className={styles.viewMal}>
-              <a
-                href={malDetails.url}
-                target={'_blank'}
-                title={'View on MyAnimeList'}
-              >
-                View on MyAnimeList
-              </a>
-            </span>
-          </div>
-        </div>
-
-        <div className={styles.episodesContainer}>
-          <div className={styles.headerContent}>
-            <h1>Episodes</h1>
+              <span className={styles.viewMal}>
+                <a
+                  href={malDetails.url}
+                  target={'_blank'}
+                  title={'View on MyAnimeList'}
+                >
+                  View on MyAnimeList
+                </a>
+              </span>
+            </div>
           </div>
 
-          <div className={styles.episodes}>
-            <div className={styles.episodeChunks}>
-              {details.result.episodes < 100 ? (
-                <button className={styles.chunk} disabled={true}>
-                  <span>0 - {details.result.episodes}</span>
-                </button>
-              ) : (
-                new Array(details.result.episodes).fill(true).map((_, i) => {
-                  // split into chunks of 100 size max
-                  if (i % 100 === 0 && i != 0)
-                    return (
-                      <button
-                        className={styles.chunk}
-                        onClick={() => setEpisodeChunk(i)}
-                        key={i}
-                        disabled={episodeChunk === i}
-                      >
-                        <span>
-                          {lastChunk} -{' '}
-                          {i + 100 > details.result.episodes
-                            ? details.result.episodes
-                            : i}
-                        </span>
-                        {(() => {
-                          lastChunk =
-                            i + 100 > details.result.episodes
-                              ? details.result.episodes
-                              : i;
-                        })()}
-                      </button>
-                    );
-                })
-              )}
+          <div className={styles.episodesContainer}>
+            <div className={styles.headerContent}>
+              <h1>Episodes</h1>
             </div>
 
-            <div className={styles.episodeButtons}>
-              {new Array(details.result.episodes).fill(true).map((_, i) => {
-                if (i < episodeChunk - 100 || i > episodeChunk) {
-                  if (
-                    i < episodeChunk ||
-                    episodeChunk + 100 < details.result.episodes
-                  )
-                    return;
-                }
-                if (+(episode?.split('episode-')[1] || '1') == i + 1)
-                  return (
-                    <div
-                      className={styles.episodeActive}
-                      title={'Current episode'}
-                      key={i}
-                    >
-                      <div className={styles.episode}>
-                        <div className={styles.text}>
-                          <span>{i + 1}</span>
+            <div className={styles.episodes}>
+              <div className={styles.episodeChunks}>
+                {details.result.episodes < 100 ? (
+                  <button className={styles.chunk} disabled={true}>
+                    <span>0 - {details.result.episodes}</span>
+                  </button>
+                ) : (
+                  new Array(details.result.episodes).fill(true).map((_, i) => {
+                    // split into chunks of 100 size max
+                    if (i % 100 === 0 && i != 0)
+                      return (
+                        <button
+                          className={styles.chunk}
+                          onClick={() => setEpisodeChunk(i)}
+                          key={i}
+                          disabled={episodeChunk === i}
+                        >
+                          <span>
+                            {lastChunk} -{' '}
+                            {i + 100 > details.result.episodes
+                              ? details.result.episodes
+                              : i}
+                          </span>
+                          {(() => {
+                            lastChunk =
+                              i + 100 > details.result.episodes
+                                ? details.result.episodes
+                                : i;
+                          })()}
+                        </button>
+                      );
+                  })
+                )}
+              </div>
+
+              <div className={styles.episodeButtons}>
+                {new Array(details.result.episodes).fill(true).map((_, i) => {
+                  if (i < episodeChunk - 100 || i > episodeChunk) {
+                    if (
+                      i < episodeChunk ||
+                      episodeChunk + 100 < details.result.episodes
+                    )
+                      return;
+                  }
+                  if (+(episode?.split('episode-')[1] || '1') == i + 1)
+                    return (
+                      <div
+                        className={styles.episodeActive}
+                        title={'Current episode'}
+                        key={i}
+                      >
+                        <div className={styles.episode}>
+                          <div className={styles.text}>
+                            <span>{i + 1}</span>
+                          </div>
                         </div>
+                      </div>
+                    );
+                  else
+                    return (
+                      <Link
+                        className={styles.episodeHref}
+                        to={generatePath('/watch/:slug/:episode', {
+                          slug,
+                          episode: `episode-${i + 1}`,
+                        })}
+                        target={'_parent'}
+                        title={`Watch ${details.result.name[0]} Episode ${
+                          i + 1
+                        }`}
+                        key={i}
+                      >
+                        <div className={styles.episode}>
+                          <div className={styles.text}>
+                            <span>{i + 1}</span>
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.comments}>
+            <div className={styles.headerContent}>
+              <h1>Comments</h1>
+            </div>
+
+            <div id='HCB_comment_box'>Comment Box is loading...</div>
+            <link
+              rel='stylesheet'
+              type='text/css'
+              href='https://www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0'
+            />
+            <script type='text/javascript' id='hcb' />
+          </div>
+        </div>
+
+        <div className={styles.sideContent}>
+          <div className={styles.header}>
+            <h1>Trending</h1>
+          </div>
+
+          <div className={styles.trendingContent}>
+            {trendingData.map((node: GogoTrendingNode, i) => {
+              const { name, slug, image, type } = node;
+
+              return (
+                <Link
+                  className={styles.hrefNode}
+                  to={`/watch/${slug}/episode-1`}
+                  key={i}
+                  reloadDocument={true}
+                >
+                  <div className={styles.trendingNode} title={`Watch ${name}`}>
+                    <div className={styles.image}>
+                      <img src={image} alt={name} />
+                      <div className={styles.type} data-type={type}>
+                        <span>{type.toUpperCase()}</span>
                       </div>
                     </div>
-                  );
-                else
-                  return (
-                    <Link
-                      className={styles.episodeHref}
-                      to={generatePath('/watch/:slug/:episode', {
-                        slug,
-                        episode: `episode-${i + 1}`,
-                      })}
-                      target={'_parent'}
-                      title={`Watch ${details.result.name[0]} Episode ${i + 1}`}
-                      key={i}
-                    >
-                      <div className={styles.episode}>
-                        <div className={styles.text}>
-                          <span>{i + 1}</span>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-              })}
-            </div>
+                    <div className={styles.text}>
+                      <span className={styles.title} title={name}>
+                        {name}
+                      </span>
+                      <span className={styles.ranking}>&#35;{i + 1}</span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
-        </div>
-
-        <div className={styles.comments}>
-          <div className={styles.headerContent}>
-            <h1>Comments</h1>
-          </div>
-
-          <div id='HCB_comment_box'>Comment Box is loading...</div>
-          <link
-            rel='stylesheet'
-            type='text/css'
-            href='https://www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0'
-          />
-          <script type='text/javascript' id='hcb' />
         </div>
       </div>
     );
