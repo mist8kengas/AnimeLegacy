@@ -146,7 +146,7 @@ export default function Navigation() {
         </div>
 
         <span>
-          <code>v1.3.1</code>
+          <code>v1.3.2</code>
         </span>
       </div>
     </div>
