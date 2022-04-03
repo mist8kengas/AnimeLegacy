@@ -42,6 +42,8 @@ $node-width: calc($image-width + 0.3em * 2);
 }
 
 .header {
+  margin-bottom: 0.6em;
+
   h1 {
     font-weight: 100;
     text-align: center;
@@ -62,6 +64,36 @@ $node-width: calc($image-width + 0.3em * 2);
 
     &:hover {
       cursor: pointer;
+    }
+  }
+
+  .lists {
+    display: flex;
+
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3em;
+
+    button {
+      background-color: var(--c-main-panel);
+
+      padding: 0.3em;
+
+      font-size: 1.1em;
+
+      &:hover:not(:disabled) {
+        background-color: var(--c-main-hov);
+        color: #dedef7;
+        cursor: pointer;
+      }
+
+      border: 0.3em solid transparent;
+      border-radius: 0.3em;
+
+      transition: background-color, color;
+      transition-timing-function: ease-in-out;
+      transition-duration: 0.2s;
+      overflow: hidden;
     }
   }
 }
