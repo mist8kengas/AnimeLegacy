@@ -105,7 +105,7 @@ export default function Navigation() {
 
             <Link
               to={{
-                pathname: '//youtube.com/channel/UC7DcAWT8A3_HLEO_RfjzmIg',
+                pathname: '//youtube.com/channel/UCelgkaZ7nbNn-xnT3VVOjEQ',
               }}
               target={'_blank'}
               title={'YouTube channel'}
