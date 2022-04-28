@@ -10,7 +10,8 @@ import {
 import { BrowserRouter, Link } from 'react-router-dom';
 
 export default function Footer() {
-  const setList = (string: string) => {};
+  const setList = (q: string) => (window.location.href = `/list?q=${q}`);
+
   return (
     <footer>
       <div className={styles.footer}>

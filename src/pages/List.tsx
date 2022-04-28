@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import styles from './List.module.scss';
 
@@ -29,6 +29,7 @@ interface GogoList extends GogoResponse {
 }
 
 function ListResult(init_list: string, page: number = 1) {
+  const query = new URL(window.location.href).searchParams.get('q');
   const [ready, setReady] = useState(false);
   const [list, setList] = useState(init_list);
   const [result, setData] = useState({
@@ -72,6 +73,8 @@ function ListResult(init_list: string, page: number = 1) {
     () => void (inView && resultPage < 24 && setResultPage(resultPage + 1)),
     [inView]
   );
+
+  useMemo(() => query && setList(query), []);
 
   if (ready && render && !result.data.length)
     return (
