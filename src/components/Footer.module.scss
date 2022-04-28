@@ -1,7 +1,58 @@
 .footer {
-  display: flex;
+  display: grid;
   color: #aaa;
+
+  grid-template-columns: 1fr;
+
   justify-content: center;
+  justify-items: center;
+  gap: 1em;
+
+  padding-top: 1em;
+  border-top: 1px solid currentColor;
+
+  .azList {
+    .label {
+      display: grid;
+      grid-template-columns: repeat(2, max-content);
+      gap: 0.3em;
+      margin: 0.3em 0;
+    }
+
+    .lists {
+      display: flex;
+
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.3em;
+
+      button {
+        background-color: var(--c-main-panel);
+
+        padding: 0.3em;
+
+        font-size: 0.85em;
+
+        &:hover:not(:disabled) {
+          background-color: var(--c-main-hov);
+          color: #dedef7;
+          cursor: pointer;
+        }
+
+        border: 0.3em solid transparent;
+        border-radius: 0.3em;
+
+        transition: background-color, color;
+        transition-timing-function: ease-in-out;
+        transition-duration: 0.2s;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .disclaimer span {
+    font-size: 0.8em;
+  }
 
   .socials {
     display: grid;

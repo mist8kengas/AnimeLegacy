@@ -17,9 +17,9 @@ export default function Genres() {
             return (
               <Link to={`/genre/${slug}`} key={i}>
                 <div className={styles.genre}>
-                  <div className={styles.image}>
+                  {/* <div className={styles.image}>
                     <img src={`/media/image/genre/${slug}.jpg`} alt={name} />
-                  </div>
+                  </div> */}
                   <div className={styles.text}>
                     <span className={styles.title}>{name}</span>
                     <span className={styles.description}>{description}</span>

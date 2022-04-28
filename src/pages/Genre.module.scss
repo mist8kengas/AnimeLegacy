@@ -1,5 +1,5 @@
-$image-width: 193px; // 225px
-$image-height: 318px; // 350px
+$image-width: 160px; // 225px
+$image-height: 222px; // 350px
 $node-width: calc($image-width + 0.3em * 2);
 
 .content {
@@ -96,8 +96,8 @@ $node-width: calc($image-width + 0.3em * 2);
 
 .genreNodePlaceholder {
   display: flex;
-  width: 203px;
-  height: 387px;
+  width: calc($image-width + 0.3em);
+  height: calc($image-height + 2.8em);
   background-color: rgba(255, 255, 255, 0.02);
   justify-content: center;
   align-items: center;
@@ -198,8 +198,10 @@ $node-width: calc($image-width + 0.3em * 2);
         // color: #ebf7ff;
       }
       &[data-type='dub'] span {
-        background-color: rgba(224, 138, 0, 0.8);
-        color: #140d00;
+        background-color: rgba(28, 32, 115, 0.8);
+        color: #fff;
+        // background-color: rgba(224, 138, 0, 0.8);
+        // color: #140d00;
       }
     }
   }

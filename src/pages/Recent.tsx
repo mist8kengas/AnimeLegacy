@@ -39,7 +39,7 @@ import 'swiper/css/pagination';
 
 import featured from '../featured.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faFilm, faPlay } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [ready, setReady] = useState(false);
@@ -133,9 +133,39 @@ function App() {
     [inView]
   );
 
+  // watch trailer pop-up
+  const [showTrailer, toggleTrailer] = useState(false);
+  const [trailerUrl, setTrailerUrl] = useState('');
+  function watchTrailer(url: string) {
+    console.log('watching trailer:', url);
+    toggleTrailer(true);
+    setTrailerUrl(url);
+  }
+  useEffect(() => {
+    !showTrailer && setTrailerUrl('');
+  }, [showTrailer]);
+
   if (ready && render)
     return (
       <>
+        {/* trailer pop-up */}
+        <div className={styles.trailerContent} hidden={!showTrailer}>
+          <div
+            className={styles.dismiss}
+            onClick={() => toggleTrailer(false)}
+          />
+          <div className={styles.watchTrailer}>
+            <iframe
+              src={(trailerUrl && `${trailerUrl}?autoplay=true`) || ''}
+              width={640}
+              height={360}
+              frameBorder={'0'}
+              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+              allowFullScreen={true}
+            />
+          </div>
+        </div>
+
         {/* featured */}
         <div className={styles.featuredContent}>
           <Swiper
@@ -147,7 +177,7 @@ function App() {
             loop={true}
           >
             {featured.map((item, i) => {
-              const { name, watch, image, description } = item;
+              const { name, watch, image, description, trailerUrl } = item;
               return (
                 <SwiperSlide key={i}>
                   <div className={styles.item}>
@@ -168,19 +198,38 @@ function App() {
                       </div>
 
                       <div className={styles.watchNow}>
-                        <Link to={watch}>
-                          <button
-                            className={styles.watchButton}
-                            title={`Watch ${name}`}
-                          >
-                            <div>
-                              <FontAwesomeIcon icon={faPlay} />
-                            </div>
-                            <div>
-                              <span>Watch</span>
-                            </div>
-                          </button>
-                        </Link>
+                        <div>
+                          <Link to={watch}>
+                            <button
+                              className={styles.watchButton}
+                              title={`Watch ${name}`}
+                            >
+                              <div>
+                                <FontAwesomeIcon icon={faPlay} />
+                              </div>
+                              <div>
+                                <span>Watch</span>
+                              </div>
+                            </button>
+                          </Link>
+                        </div>
+
+                        {trailerUrl && (
+                          <div>
+                            <button
+                              className={styles.watchButton}
+                              title={`Watch ${name} trailer`}
+                              onClick={() => watchTrailer(trailerUrl)}
+                            >
+                              <div>
+                                <FontAwesomeIcon icon={faFilm} />
+                              </div>
+                              <div>
+                                <span>Trailer</span>
+                              </div>
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -484,4 +533,3 @@ function App() {
 }
 
 export default App;
-

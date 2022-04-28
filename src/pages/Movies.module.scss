@@ -212,8 +212,10 @@ $node-width: calc($image-width + 0.3em * 2);
         // color: #ebf7ff;
       }
       &[data-type='dub'] span {
-        background-color: rgba(224, 138, 0, 0.8);
-        color: #140d00;
+        background-color: rgba(28, 32, 115, 0.8);
+        color: #fff;
+        // background-color: rgba(224, 138, 0, 0.8);
+        // color: #140d00;
       }
     }
   }

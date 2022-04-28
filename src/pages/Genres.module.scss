@@ -20,8 +20,10 @@
 }
 
 .genres {
-  display: grid;
-  grid-template-rows: max-content;
+  display: flex;
+  flex-wrap: wrap;
+  // display: grid;
+  // grid-template-rows: max-content;
   justify-content: center;
   gap: 0.3em;
 
@@ -51,6 +53,13 @@
       div.image {
         opacity: 0.8;
       }
+
+      div.text .description {
+        display: inline-block;
+
+        /* opacity: 1;
+        width: 100%; */
+      }
     }
 
     div.image {
@@ -78,7 +87,15 @@
         font-size: 1.6em;
       }
       .description {
+        display: none;
         color: #aaa;
+
+        /* transition: 0.2s ease-in-out;
+
+        opacity: 0;
+        width: 0;
+        height: 1em;
+        overflow: hidden; */
       }
     }
 
