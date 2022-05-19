@@ -19,7 +19,7 @@
     background-color: rgba(255, 255, 255, 0.02);
 
     &:hover {
-      background-color: var(--c-main-panel);
+      // background-color: var(--c-main-panel);
 
       .navList {
         opacity: 1;
@@ -242,5 +242,11 @@
         cursor: pointer;
       }
     }
+  }
+}
+
+@media (max-height: 730px) {
+  .socials {
+    display: none;
   }
 }

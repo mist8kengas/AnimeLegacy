@@ -15,14 +15,14 @@ export default function Genres() {
           {Object.values(genres).map((genre, i) => {
             const [slug, name, description] = genre;
             return (
-              <Link to={`/genre/${slug}`} key={i}>
+              <Link to={`/genre/${slug}`} key={i} title={description}>
                 <div className={styles.genre}>
                   {/* <div className={styles.image}>
                     <img src={`/media/image/genre/${slug}.jpg`} alt={name} />
                   </div> */}
                   <div className={styles.text}>
                     <span className={styles.title}>{name}</span>
-                    <span className={styles.description}>{description}</span>
+                    {/* <span className={styles.description}>{description}</span> */}
                   </div>
                 </div>
               </Link>
