@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import styles from './Recent.module.scss';
 
@@ -145,9 +145,27 @@ function App() {
     !showTrailer && setTrailerUrl('');
   }, [showTrailer]);
 
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipContent, setTooltipContent] = useState(<></>);
+  const [tooltipPos, setTooltipPos] = useState([0, 0]);
+
+  var tooltipMoveEvent;
+  const requestController = new AbortController();
+
   if (ready && render)
     return (
       <>
+        {/* hover details pop-up */}
+        <div
+          className={styles.tooltipContent}
+          hidden={!showTooltip}
+          style={{
+            top: tooltipPos[0],
+            left: tooltipPos[1],
+          }}
+          children={tooltipContent}
+        />
+
         {/* trailer pop-up */}
         <div className={styles.trailerContent} hidden={!showTrailer}>
           <div
@@ -397,6 +415,87 @@ function App() {
                       to={watchHref}
                       key={i}
                       ref={recent.length - 1 - 3 === i ? intersectionRef : null}
+                      onMouseEnter={(e) => {
+                        console.debug('[hover:on]', `${slug}-${episode}`, e);
+                        setTooltipPos([e.clientY, e.clientX]);
+                        setShowTooltip(true);
+                        setTooltipContent(
+                          <div className={styles.text} data-loading='true'>
+                            <span>Loading</span>
+                          </div>
+                        );
+
+                        tooltipMoveEvent = e.target.addEventListener(
+                          'mousemove',
+                          (e: any) => setTooltipPos([e.clientY, e.clientX])
+                        );
+
+                        axios
+                          .get(`${urls.api}/anime/info/${slug}`, {
+                            signal: requestController.signal,
+                          })
+                          .then(async (response: AxiosResponse<any>) => {
+                            const { data } = response;
+                            if (!data || !data.result) return;
+                            const { result: details } = data;
+
+                            // setShowTooltip(true);
+                            setTooltipContent(
+                              <div className={styles.text}>
+                                <span
+                                  className={styles.title}
+                                  title={details.name[0]}
+                                >
+                                  {details.name[0]}
+                                </span>
+                                <span className={styles.episode}>
+                                  {episode} / {details.episodes}
+                                </span>
+                                <span className={styles.status}>
+                                  {details.status === 'completed'
+                                    ? 'Finished Airing'
+                                    : 'Airing'}
+                                </span>
+                                <span className={styles.released}>
+                                  {details.released}
+                                </span>
+
+                                <span className={styles.genres}>
+                                  {details.genres.map(
+                                    (genre: string[], i: number) => (
+                                      <span key={i}>
+                                        <Link
+                                          to={generatePath('/genre/:genre', {
+                                            genre: genre[1],
+                                          })}
+                                          title={genre[0]}
+                                        >
+                                          {genre[0]}
+                                        </Link>
+                                        {details.genres.length - 1 > i && ', '}
+                                      </span>
+                                    )
+                                  )}
+                                </span>
+                                <span className={styles.summary}>
+                                  {details.summary}
+                                </span>
+                              </div>
+                            );
+                          });
+                      }}
+                      onMouseLeave={(e) => {
+                        console.debug(
+                          '[hover:off]',
+                          `${slug}-episode-${episode}`
+                        );
+                        requestController.abort();
+                        setShowTooltip(false);
+                        tooltipMoveEvent = e.target.removeEventListener(
+                          'mousemove',
+                          null
+                        );
+                      }}
                     >
                       <div
                         className={styles.recentNode}

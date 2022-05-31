@@ -488,3 +488,107 @@ $node-width: calc($image-width + 0.3em * 2);
     }
   }
 }
+
+div.tooltipContent {
+  display: block;
+  position: fixed;
+
+  background-color: var(--c-main-hov);
+
+  padding: 1em;
+
+  border-radius: 0.3em;
+  pointer-events: none;
+
+  transition: 0.1s opacity ease-in-out;
+  opacity: 1;
+
+  z-index: 100;
+
+  &[hidden] {
+    opacity: 0;
+  }
+
+  div.text {
+    display: grid;
+    max-width: 16em;
+    max-height: 350px;
+    padding: 0 0 0 0.3em;
+
+    grid-template-rows: repeat(auto-fit, minmax(0, max-content));
+    justify-content: start;
+
+    transition: 0.1s ease-in-out;
+
+    &[data-loading='true'] {
+      width: 16em;
+      height: 6em;
+    }
+
+    span {
+      text-align: left;
+      word-break: break-all;
+    }
+    .title {
+      display: -webkit-box;
+      font-size: 1.6em;
+      font-weight: 400;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    span::before {
+      margin-right: 0.3em;
+      color: #aaa;
+    }
+    .episode::before {
+      content: 'Episodes';
+    }
+    .status::before {
+      content: 'Status';
+    }
+    .genres {
+      &::before {
+        content: 'Genres';
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    }
+    .released {
+      &::before {
+        content: 'Released';
+      }
+    }
+    .score {
+      &::before {
+        content: 'Score';
+      }
+    }
+    .rating {
+      &::before {
+        content: 'Rating';
+      }
+    }
+    .summary {
+      display: -webkit-box;
+      max-width: 720px;
+      max-height: 4em;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: normal;
+
+      &::before {
+        content: 'Summary';
+      }
+    }
+    .viewMal {
+      margin: 1.2em 0;
+
+      a:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
