@@ -127,7 +127,7 @@ $node-width: calc($image-width + 0.3em * 2);
             display: -webkit-box;
             font-size: 1.6em;
             font-weight: 500;
-            -webkit-line-clamp: 1;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
           }
@@ -200,7 +200,7 @@ $node-width: calc($image-width + 0.3em * 2);
 .rwContent,
 .trendingContent {
   display: grid;
-  height: calc($image-height + 4.3em);
+  height: calc($image-height + 6em);
   grid-template-columns: repeat(auto-fit, minmax(0, $node-width));
   justify-content: center;
   justify-items: center;
@@ -273,9 +273,10 @@ $node-width: calc($image-width + 0.3em * 2);
     }
     .title {
       display: -webkit-box;
+      height: 2.67em;
       font-size: 1.2em;
       font-weight: 500;
-      -webkit-line-clamp: 1;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -430,7 +431,7 @@ $node-width: calc($image-width + 0.3em * 2);
       display: -webkit-box;
       font-size: 1.1em;
       font-weight: 400;
-      -webkit-line-clamp: 1;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -533,7 +534,7 @@ div.tooltipContent {
       display: -webkit-box;
       font-size: 1.6em;
       font-weight: 400;
-      -webkit-line-clamp: 1;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }

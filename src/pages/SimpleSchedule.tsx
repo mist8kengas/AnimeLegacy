@@ -60,16 +60,22 @@ function CountdownContent(node: AniChartNode, key: any) {
   function msToTime(ms: number) {
     const seconds = +(ms / 1000).toFixed(1),
       minutes = +(ms / (1000 * 60)).toFixed(1),
-      hours = +(ms / (1000 * 60 * 60)).toFixed(1),
-      days = +(ms / (1000 * 60 * 60 * 24)).toFixed(1);
-    if (seconds < 60) return ~~seconds + ' Seconds';
-    else if (minutes < 60) return ~~minutes + ' Minutes';
-    else if (hours < 24) return ~~hours + ' Hours';
-    else return days + ' Days';
+      hours = +(ms / (1000 * 3600)).toFixed(1),
+      days = +(ms / (1000 * 3600 * 24)).toFixed(1);
+
+    if (seconds < 60) return `${~~seconds} Seconds`;
+    if (minutes < 60) return `${~~minutes} Minutes`;
+    if (hours < 24) return `${~~hours} Hours`;
+
+    if (days >= 1) {
+      if (hours % 24 && hours > 0)
+        return `${~~days} Days ${Math.round(hours % 24)} Hours`;
+      else return `${~~days} Days`;
+    }
   }
 
   const airDelay = 108e5; // gogoanime delay (120960)
-  const hoursIn = msToTime(airs_in + airDelay - Date.now());
+  const timeIn = msToTime(airs_in + airDelay - Date.now());
   const willAir = airs_in + airDelay > Date.now(); // 216e5
 
   const data = (
@@ -88,9 +94,7 @@ function CountdownContent(node: AniChartNode, key: any) {
 
         <span>Episode {episode}</span>
 
-        <span className={styles.countdown}>
-          {willAir ? `Airs in ~${hoursIn}` : 'Aired'}
-        </span>
+        <span className={styles.countdown}>{willAir ? timeIn : 'Aired'}</span>
       </div>
     </div>
   );
