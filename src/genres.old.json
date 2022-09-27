@@ -1,0 +1,207 @@
+{
+  "action": [
+    "action",
+    "Action",
+    "Extremely high levels of intense action, thrilling battles and action-packed fight scenes"
+  ],
+  "adventure": [
+    "adventure",
+    "Adventure",
+    "Travelling and undertaking an adventure in a certain place or around the world"
+  ],
+  "cars": [
+    "cars",
+    "Cars",
+    "All about cars and anything to do with them running in the 90s"
+  ],
+  "comedy": [
+    "comedy",
+    "Comedy",
+    "If it fails to make you laugh or at least make you giggle, then it's a failure"
+  ],
+  "crime": [
+    "crime",
+    "Crime",
+    "Bad guys everywhere, the protagonist has to protect everyone"
+  ],
+  "dementia": [
+    "dementia",
+    "Dementia",
+    "Do you know who else has dementia? Do you know who else has dementia?"
+  ],
+  "demons": [
+    "demons",
+    "Demons",
+    "Demons, from biblical backgrounds or Japanese culture are here"
+  ],
+  "drama": [
+    "drama",
+    "Drama",
+    "Whether it's a tickle of emotion or a barrage of feelings, the goal is to touch your heart"
+  ],
+  "dub": ["dub", "Dub", "Japanese characters speaking other languages"],
+  "ecchi": [
+    "ecchi",
+    "Ecchi",
+    "When you want hentai but mom said you have hentai at home"
+  ],
+  "family": ["family", "Family", "Anime for all of the family"],
+  "fantasy": [
+    "fantasy",
+    "Fantasy",
+    "Fantasy worlds, surreal events and locations"
+  ],
+  "game": [
+    "game",
+    "Game",
+    "As long as it concerns any playable game of any kind, it belongs in this category"
+  ],
+  "gender-bender": [
+    "gender-bender",
+    "Gender Bender",
+    "When the protagonist has a gender-crisis"
+  ],
+  "gourmet": ["gourmet", "Gourmet", "Where's the damn lambsauce?!"],
+  "harem": [
+    "harem",
+    "Harem",
+    "More than two female characters go head-over-heels for a single male character"
+  ],
+  "historical": [
+    "historical",
+    "Historical",
+    "Revolves around events in history and moments of antiquity"
+  ],
+  "horror": ["horror", "Horror", "Spooky scary skeletons"],
+  "josei": [
+    "josei",
+    "Josei",
+    "Targets female viewers around the age range of 18-40"
+  ],
+  "kids": [
+    "kids",
+    "Kids",
+    "Mild, light, and insightful, which makes them perfect for children 12 and under"
+  ],
+  "magic": [
+    "magic",
+    "Magic",
+    "Stuff like spells and incantations. It can also include magical sources, beings that grants wishes, and good ol' sleeve tricks"
+  ],
+  "martial-arts": [
+    "martial-arts",
+    "Martial Arts",
+    "Shows that are primarily focused on martial arts itself and their battle techniques"
+  ],
+  "mecha": [
+    "mecha",
+    "Mecha",
+    "You'll never see a mecha anime without a robot or mechanical suit in it"
+  ],
+  "military": [
+    "military",
+    "Military",
+    "Involves the military in one way or another"
+  ],
+  "music": [
+    "music",
+    "Music",
+    "These shows typically focus on singing, dancing, or playing musical instruments"
+  ],
+  "mystery": [
+    "mystery",
+    "Mystery",
+    "Whether it's an event, a place, or an item, there's some sort of mystery surrounding the narrative"
+  ],
+  "parody": [
+    "parody",
+    "Parody",
+    "Countless numbers of other anime references are showcased throughout the plot"
+  ],
+  "police": [
+    "police",
+    "Police",
+    "Emphasizes the life and struggles of law enforcement in their line of duty"
+  ],
+  "psychological": [
+    "psychological",
+    "Psychological",
+    "Shows that delve into how the mind and psyche work"
+  ],
+  "romance": ["romance", "Romance", "All about love and sweet moments"],
+  "samurai": [
+    "samurai",
+    "Samurai",
+    "Characters that are blade-wielding samurai"
+  ],
+  "school": [
+    "school",
+    "School",
+    "If a school is the primary setting and the anime deals mostly with school and student life"
+  ],
+  "sci-fi": [
+    "sci-fi",
+    "Sci-Fi",
+    "Showcases scientific and technological elements in its story"
+  ],
+  "seinen": [
+    "seinen",
+    "Seinen",
+    "Specifically targets male viewers around the age range of 18-40"
+  ],
+  "shoujo": [
+    "shoujo",
+    "Shoujo",
+    "Specifically targets female viewers around the age range of 10-18"
+  ],
+  "shoujo-ai": [
+    "shoujo-ai",
+    "Shoujo Ai",
+    "Meaning \"girl's love\", typically young female characters show love and affection for each other"
+  ],
+  "shounen": [
+    "shounen",
+    "Shounen",
+    "Specifically targets male viewers around the age range of 10-18"
+  ],
+  "shounen-ai": [
+    "shounen-ai",
+    "Shounen Ai",
+    "Meaning \"boy's love\", typically young male characters show tender affection for each other"
+  ],
+  "slice-of-life": [
+    "slice-of-life",
+    "Slice of Life",
+    "The mundane good ol' life"
+  ],
+  "space": ["space", "Space", "Houston, we have a problem"],
+  "sports": ["sports", "Sports", "Characters engaging in athletic competition"],
+  "super-power": [
+    "super-power",
+    "Super Power",
+    "Expect an array of explosive super powers scrambling right on the screen"
+  ],
+  "supernatural": [
+    "supernatural",
+    "Supernatural",
+    "Events that are odd and out-of-the-blue"
+  ],
+  "suspense": [
+    "suspense",
+    "Suspense",
+    "Not quite a thriller, but puts you on the edge of your seat"
+  ],
+  "thriller": [
+    "thriller",
+    "Thriller",
+    "Puts you on the edge of your seat and on the verge of having a heart attack"
+  ],
+  "vampire": [
+    "vampire",
+    "Vampire",
+    "A creature from folklore that subsists by feeding on the vital essence of the living"
+  ],
+  "work-life": ["work-life", "Work Life", "All about work"],
+  "yaoi": ["yaoi", "Yaoi", "Explicit boy's love"],
+  "yuri": ["yuri", "Yuri", "Explicit girl's love"]
+}

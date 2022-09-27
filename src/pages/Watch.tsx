@@ -242,6 +242,20 @@ export default function Watch() {
     return (
       <div className={styles.content}>
         <div className={styles.mainContent}>
+          <div className={styles.adBanner}>
+            <iframe
+              data-aa='2088833'
+              loading='lazy'
+              src='//ad.a-ads.com/2088833?size=728x90'
+              style={{
+                border: '0px',
+                padding: 0,
+                overflow: 'hidden',
+                backgroundColor: 'transparent',
+              }}
+            ></iframe>
+          </div>
+
           <div className={styles.videoContainer}>
             <div className={styles.header}>
               <h1>

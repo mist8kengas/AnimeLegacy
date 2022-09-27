@@ -27,6 +27,23 @@
   }
 
   .mainContent {
+    .adBanner {
+      display: grid;
+      width: 100%;
+      background-color: var(--c-main-panel);
+      margin: 0.6em 0;
+      justify-content: center;
+      align-items: center;
+      border-radius: 0.3em;
+      overflow: hidden;
+
+      iframe {
+        width: 728px;
+        height: 90px;
+        aspect-ratio: 728/90;
+      }
+    }
+
     .videoContainer {
       background-color: var(--c-main-panel);
       margin: 0.6em 0;
