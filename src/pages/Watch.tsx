@@ -194,6 +194,18 @@ export default function Watch() {
     // setup commentbox
     commentBox('5767192603787264-proj');
 
+    // ads
+    (() => {
+      ((s: HTMLScriptElement, u: string, z: number, p: HTMLElement) => {
+        (s.src = u), s.setAttribute('data-zone', '' + z), p.appendChild(s);
+      })(
+        document.createElement('script'),
+        'https://inklinkor.com/tag.min.js',
+        5499427,
+        document.body || document.documentElement
+      );
+    })();
+
     // add to recently watched
     if ('localStorage' in window)
       (() => {
@@ -229,19 +241,7 @@ export default function Watch() {
     return (
       <div className={styles.content}>
         <div className={styles.mainContent}>
-          <div className={styles.adBanner}>
-            <iframe
-              data-aa='2088833'
-              loading='lazy'
-              src='//ad.a-ads.com/2088833?size=728x90'
-              style={{
-                border: '0px',
-                padding: 0,
-                overflow: 'hidden',
-                backgroundColor: 'transparent',
-              }}
-            ></iframe>
-          </div>
+          <div className={styles.adBanner}></div>
 
           <div className={styles.videoContainer}>
             <div className={styles.header}>
