@@ -1,3 +1,3 @@
-declare module 'commentbox.io' {
-  export default function (id: string): any;
+declare module 'commentbox.io/dist/commentBox.min.js' {
+  export default function (id: string): unknown;
 }

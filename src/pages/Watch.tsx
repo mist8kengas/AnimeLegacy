@@ -6,7 +6,7 @@ import Loading from '../components/Loading';
 import urls from '../urls.json';
 
 import axios, { AxiosResponse } from 'axios';
-import commentBox from 'commentbox.io';
+import commentBox from 'commentbox.io/dist/commentBox.min.js';
 
 interface GogoResponse {
   request: {
