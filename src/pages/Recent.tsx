@@ -152,18 +152,6 @@ function App() {
   var tooltipMoveEvent;
   const requestController = new AbortController();
 
-  if (ready)
-    // ads
-    (() => {
-      ((s: HTMLScriptElement, u: string, z: number, p: HTMLElement) => {
-        (s.src = u), s.setAttribute('data-zone', '' + z), p.appendChild(s);
-      })(
-        document.createElement('script'),
-        'https://inklinkor.com/tag.min.js',
-        5499427,
-        document.body || document.documentElement
-      );
-    })();
   if (ready && render)
     return (
       <>

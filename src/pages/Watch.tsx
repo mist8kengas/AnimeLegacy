@@ -201,7 +201,7 @@ export default function Watch() {
       })(
         document.createElement('script'),
         'https://inklinkor.com/tag.min.js',
-        5499427,
+        5499645,
         document.body || document.documentElement
       );
     })();
