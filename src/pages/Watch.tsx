@@ -6,7 +6,7 @@ import Loading from '../components/Loading';
 import urls from '../urls.json';
 
 import axios, { AxiosResponse } from 'axios';
-import commentBox from 'commentbox.io/dist/commentBox.min.js';
+import { DiscussionEmbed } from 'disqus-react';
 
 interface GogoResponse {
   request: {
@@ -134,6 +134,8 @@ export default function Watch() {
     url: '',
   });
 
+  const [showComments, setCommentsState] = useState(false);
+
   // get content
   useEffect(
     () =>
@@ -191,9 +193,6 @@ export default function Watch() {
   }, []);
 
   if (ready) {
-    // setup commentbox
-    commentBox('5767192603787264-proj');
-
     // ads
     (() => {
       ((s: HTMLScriptElement, u: string, z: number, p: HTMLElement) => {
@@ -472,7 +471,31 @@ export default function Watch() {
               <h1>Comments</h1>
             </div>
 
-            <div id='commentbox'>Comment Box is loading...</div>
+            <div className={styles.commentBox}>
+              {showComments ? (
+                <DiscussionEmbed
+                  shortname='animelegacy'
+                  config={{
+                    url: window.location.href,
+                    identifier: slug,
+                  }}
+                />
+              ) : (
+                <div className={styles.hiddenCommentBox}>
+                  <p>
+                    Don't spoil future episodes, not even with a spoiler tag.
+                    Spoiler tags are only allowed to be used for in episode
+                    spoilers. If you see this please "flag as inappropriate-
+                    spam You will get banned without warning for spoiling future
+                    episodes.
+                  </p>
+
+                  <button onClick={() => setCommentsState(true)}>
+                    Show Comments
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
