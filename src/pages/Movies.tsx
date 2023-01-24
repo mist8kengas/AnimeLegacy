@@ -145,7 +145,7 @@ function MovieResult(init_list: string, page: number = 1) {
         <div className={styles.siteLanguage}>
           <div className={styles.floatieContainer}>
             <div className={styles.label}>
-              <span>Language</span>
+              <span>Anime Name</span>
             </div>
             <div className={styles.toggleContainer}>
               <button
