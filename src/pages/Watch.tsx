@@ -16,10 +16,28 @@ interface GogoResponse {
   };
 }
 
+type GogoVideoKey =
+  | 'anime'
+  | 'doodstream'
+  | 'streamsb'
+  | 'vidcdn'
+  | 'xstreamcdn'
+  | 'mp4upload';
+enum GogoVideoName {
+  anime = 'Gogo',
+  doodstream = 'Doodstream',
+  streamsb = 'StreamSB',
+  vidcdn = 'VidCDN',
+  xstreamcdn = 'XStreamCDN',
+  mp4upload = 'Mp4upload',
+}
 interface GogoVideo {
   id: number;
   name: string;
   url: string;
+
+  // client-side
+  disabled?: boolean;
 }
 interface GogoData extends GogoResponse {
   result: {
@@ -34,11 +52,7 @@ interface GogoData extends GogoResponse {
     image: string;
     type: 'sub' | 'dub';
     video?: {
-      anime: GogoVideo;
-      doodstream: GogoVideo;
-      streamsb: GogoVideo;
-      vidcdn: GogoVideo;
-      xstreamcdn: GogoVideo;
+      [index: GogoVideoKey | string]: GogoVideo;
     };
   };
 }
@@ -127,6 +141,7 @@ export default function Watch() {
     },
   });
   const [ready, setReady] = useState(false);
+  const [embedSource, setEmbedSource] = useState<GogoVideo | undefined>();
 
   const [malDetails, setMalDetails] = useState({
     score: 0,
@@ -141,11 +156,38 @@ export default function Watch() {
     () =>
       void axios
         .get(`${urls.api}/anime/${slugEpisode}`)
-        .then((response: AxiosResponse<GogoData>) => {
+        .then(async (response: AxiosResponse<GogoData>) => {
           const { data } = response;
           if (!data || !data.result) return;
 
           setData(data);
+
+          if (data.result.video) {
+            // check if the embed is available
+            const isAvailable = async (source: GogoVideo) => {
+              const response = await fetch(source.url, {
+                method: 'GET',
+                mode: 'no-cors',
+              }).catch(
+                (error) => (
+                  console.debug('[isAvailable:error]', source.name, error),
+                  false
+                )
+              );
+              return !!response;
+            };
+
+            for (const source of Object.values(data.result.video)) {
+              const disabled = !(await isAvailable(source));
+              data.result.video[source.name].disabled = disabled;
+            }
+
+            const firstSource = Object.values(data.result.video).filter(
+              (x) => !x.disabled
+            )[0];
+            setEmbedSource(firstSource);
+          }
+
           setReady(true);
         }),
     []
@@ -254,9 +296,37 @@ export default function Watch() {
               </h1>
             </div>
 
+            <div className={styles.source}>
+              <div className={styles.embedSelect}>
+                <span>Source</span>
+                <select
+                  defaultValue={embedSource?.name}
+                  onInput={(event) => {
+                    const input = event.target as HTMLSelectElement;
+
+                    if (data.result.video) {
+                      const sourceId =
+                        input.value as keyof GogoData['result']['video'];
+                      const video = data.result.video[sourceId];
+                      setEmbedSource(video);
+                    }
+                  }}
+                >
+                  {Object.values(data.result.video || []).map((source) => {
+                    const { id, name, disabled } = source;
+                    return (
+                      <option key={id} value={name} disabled={disabled}>
+                        {GogoVideoName[name as GogoVideoKey] || name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            </div>
+
             <div className={styles.embed}>
               <iframe
-                src={data.result.video?.anime.url}
+                src={embedSource?.url}
                 frameBorder={0}
                 scrolling={'no'}
                 allowFullScreen={true}

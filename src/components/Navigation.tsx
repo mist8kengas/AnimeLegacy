@@ -64,13 +64,18 @@ export default function Navigation() {
 
       <div className={styles.navigation} data-min={minimized}>
         <div className={styles.header}>
-          <BrowserRouter>
-            <Link to={'/'} reloadDocument={true}>
-              <div className={styles.logo} title={'AnimeLegacy'}>
-                <img src={logo} alt={'AL'} />
-              </div>
-            </Link>
-          </BrowserRouter>
+          <button
+            onClick={() => setMinimized(!minimized)}
+            title={`Click to ${minimized ? 'expand' : 'minimize'}`}
+          >
+            {/* <BrowserRouter> */}
+            {/* <Link to={'/'} reloadDocument={true}> */}
+            <div className={styles.logo} title={'AnimeLegacy'}>
+              <img src={logo} alt={'AL'} />
+            </div>
+            {/* </Link> */}
+            {/* </BrowserRouter> */}
+          </button>
         </div>
 
         <div className={styles.navList}>
@@ -174,7 +179,7 @@ export default function Navigation() {
         </div>
 
         <div className={styles.footer}>
-          <div className={styles.toggleMin}>
+          {/* <div className={styles.toggleMin}>
             <button
               onClick={() => setMinimized(!minimized)}
               title={`Click to ${minimized ? 'expand' : 'minimize'}`}
@@ -184,10 +189,10 @@ export default function Navigation() {
                 icon={minimized ? faAnglesRight : faAnglesLeft}
               />
             </button>
-          </div>
+          </div> */}
 
           <span>
-            <code>v1.3.6</code>
+            <code>v1.4.0</code>
           </span>
         </div>
       </div>

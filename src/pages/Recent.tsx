@@ -24,6 +24,9 @@ interface GogoRecentNode {
   episode: number;
   image: string;
 }
+interface GogoExtendedNode extends GogoRecentNode {
+  name_english?: string;
+}
 interface GogoTrendingNode extends GogoRecentNode {
   type: 'sub' | 'dub';
 }
@@ -56,6 +59,10 @@ function App() {
 
   const [render, setRender] = useState(0);
 
+  const [language, setLanguage] = useState<'native' | 'english' | string>(
+    window.localStorage.getItem('al-slang') || 'native'
+  );
+
   // recently watched
   interface RecentlyWatchedNode {
     name: string;
@@ -70,17 +77,71 @@ function App() {
     window.localStorage.getItem('al-rw0') || '[]'
   );
 
+  // change to english title
+  const processContent = async (
+    content: GogoRecentNode[] | GogoTrendingNode[]
+  ) =>
+    await Promise.all<Promise<GogoExtendedNode>[]>(
+      content.map(
+        (item) =>
+          new Promise(async (resolve, reject) => {
+            const getMalId = async () => {
+              const malDetailsURL = new URL(
+                'https://jikan-api.animeonsen.xyz/v3/search/anime'
+              );
+              malDetailsURL.searchParams.set('limit', '1');
+              malDetailsURL.searchParams.set('q', item.name);
+              const malDetailsReq = await axios
+                .get(malDetailsURL.href)
+                .catch(() => undefined);
+
+              if (malDetailsReq?.data.results) {
+                const [data] = malDetailsReq.data.results;
+                return data.mal_id as number | undefined;
+              }
+            };
+
+            const malId = await getMalId();
+            if (!malId) {
+              console.error('[!content-getMalId]', item);
+              return resolve(item);
+            }
+
+            const malDetailsURL = new URL(
+              `https://jikan-api.animeonsen.xyz/v3/anime/${malId}`
+            );
+            const malDetailsReq = await axios
+              .get(malDetailsURL.href)
+              .catch(() => undefined);
+
+            if (!malDetailsReq) return resolve(item);
+
+            const { data } = malDetailsReq;
+
+            // console.log(data);
+            return resolve({
+              ...item,
+              name_english: data.title_english,
+            });
+          })
+      )
+    );
+
   // regular request
   useEffect(
     () =>
       void axios
         .get(`${urls.api}/anime/recent?page=${recentPage}&type=${recentType}`)
-        .then((response: AxiosResponse<GogoRecent>) => {
+        .then(async (response: AxiosResponse<GogoRecent>) => {
           const { data } = response;
           if (!data) return;
           const newData = recent;
           newData.push(...data.result);
-          setData(newData);
+
+          const processedData = await processContent(newData);
+          console.log('processedData', processedData);
+
+          setData(processedData);
 
           setReady(true);
           setRender(Math.random());
@@ -93,10 +154,10 @@ function App() {
     setReady(false);
     return void axios
       .get(`${urls.api}/anime/recent?page=${recentPage}&type=${recentType}`)
-      .then((response: AxiosResponse<GogoRecent>) => {
+      .then(async (response: AxiosResponse<GogoRecent>) => {
         const { data } = response;
         if (!data) return;
-        setData(data.result);
+        setData(await processContent(data.result));
 
         if (recentPage) setReady(true);
       });
@@ -107,10 +168,10 @@ function App() {
     // setReady(false);
     return void axios
       .get(`${urls.api}/anime/recent/trending`)
-      .then((response: AxiosResponse<GogoRecent>) => {
+      .then(async (response: AxiosResponse<GogoRecent>) => {
         const { data } = response;
         if (!data) return;
-        setTrending(data.result);
+        setTrending(await processContent(data.result));
 
         // if (recentPage) setReady(true);
       });
@@ -120,10 +181,10 @@ function App() {
   useEffect(() => {
     return void axios
       .get(`${urls.api}/anime/top/${topTime}`)
-      .then((response: AxiosResponse<GogoRecent>) => {
+      .then(async (response: AxiosResponse<GogoRecent>) => {
         const { data } = response;
         if (!data) return;
-        setTopData(data.result);
+        setTopData(await processContent(data.result));
       });
   }, [topTime]);
 
@@ -155,6 +216,30 @@ function App() {
   if (ready && render)
     return (
       <>
+        {/* site language */}
+        <div className={styles.siteLanguage}>
+          <div className={styles.floatieContainer}>
+            <div className={styles.label}>
+              <span>Language</span>
+            </div>
+            <div className={styles.toggleContainer}>
+              <button
+                onClick={() => setLanguage('native')}
+                disabled={language === 'native'}
+              >
+                <span>Native</span>
+              </button>
+
+              <button
+                onClick={() => setLanguage('english')}
+                disabled={language === 'english'}
+              >
+                <span>English</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* hover details pop-up */}
         <div
           className={styles.tooltipContent}
@@ -331,48 +416,60 @@ function App() {
               </div>
 
               <div className={styles.trendingContent}>
-                {trending.map((node: GogoTrendingNode, i) => {
-                  const { name, slug, episode, image } = node;
-
-                  if (!slug) {
-                    console.warn(
-                      '[Recent.tsx]',
-                      'ID for',
+                {trending.map(
+                  (node: GogoTrendingNode & GogoExtendedNode, i) => {
+                    const {
+                      name: name_native,
+                      name_english,
                       slug,
-                      'is undefined'
-                    );
-                    return;
-                  }
+                      episode,
+                      image,
+                    } = node;
+                    const name =
+                      language == 'native'
+                        ? name_native
+                        : name_english || name_native;
 
-                  const watchHref = `/watch/${slug}/episode-${episode}`;
-                  return (
-                    <Link className={styles.hrefNode} to={watchHref} key={i}>
-                      <div
-                        className={styles.recentNode}
-                        title={`Watch ${name} Episode ${episode}`}
-                      >
-                        <div className={styles.image}>
-                          <img
-                            src={image}
-                            alt={name}
-                            loading={recentPage > 1 ? 'lazy' : 'eager'}
-                          />
-                          <div className={styles.type} data-type={node.type}>
-                            <span>{node.type.toUpperCase()}</span>
+                    if (!slug) {
+                      console.warn(
+                        '[Recent.tsx]',
+                        'ID for',
+                        slug,
+                        'is undefined'
+                      );
+                      return;
+                    }
+
+                    const watchHref = `/watch/${slug}/episode-${episode}`;
+                    return (
+                      <Link className={styles.hrefNode} to={watchHref} key={i}>
+                        <div
+                          className={styles.recentNode}
+                          title={`Watch ${name} Episode ${episode}`}
+                        >
+                          <div className={styles.image}>
+                            <img
+                              src={image}
+                              alt={name}
+                              loading={recentPage > 1 ? 'lazy' : 'eager'}
+                            />
+                            <div className={styles.type} data-type={node.type}>
+                              <span>{node.type.toUpperCase()}</span>
+                            </div>
+                          </div>
+                          <div className={styles.text}>
+                            <span className={styles.title} title={name}>
+                              {name}
+                            </span>
+                            <span className={styles.episode}>
+                              Episode {episode}
+                            </span>
                           </div>
                         </div>
-                        <div className={styles.text}>
-                          <span className={styles.title} title={name}>
-                            {name}
-                          </span>
-                          <span className={styles.episode}>
-                            Episode {episode}
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
+                      </Link>
+                    );
+                  }
+                )}
               </div>
             </div>
 
@@ -394,8 +491,19 @@ function App() {
               </div>
 
               <div className={styles.recentContent}>
-                {recent.map((node: GogoRecentNode, i) => {
-                  const { name, slug: slugEpisode, episode, image } = node;
+                {recent.map((node: GogoRecentNode & GogoExtendedNode, i) => {
+                  const {
+                    name: name_native,
+                    name_english,
+                    slug: slugEpisode,
+                    episode,
+                    image,
+                  } = node;
+                  const name =
+                    language == 'native'
+                      ? name_native
+                      : name_english || name_native;
+
                   const [, slug] =
                     /^(.*)(?:-episode-(?:.*))$/.exec(slugEpisode) || [];
 
@@ -592,8 +700,18 @@ function App() {
               </div>
 
               <div className={styles.topContent}>
-                {topData.map((node: GogoTrendingNode, i) => {
-                  const { name, slug, image, type } = node;
+                {topData.map((node: GogoTrendingNode & GogoExtendedNode, i) => {
+                  const {
+                    name: name_native,
+                    name_english,
+                    slug,
+                    image,
+                    type,
+                  } = node;
+                  const name =
+                    language == 'native'
+                      ? name_native
+                      : name_english || name_native;
 
                   return (
                     <Link

@@ -52,6 +52,28 @@
       overflow: hidden;
     }
 
+    .source {
+      display: grid;
+      justify-items: end;
+      // justify-items: start;
+
+      .embedSelect {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 0.3em;
+        margin: 0.3em 0;
+
+        select {
+          background-color: inherit;
+          color: #aaa;
+          font-size: inherit;
+          font-style: normal;
+          border: none;
+          outline: none;
+        }
+      }
+    }
+
     .embed {
       display: flex;
       width: 100%;

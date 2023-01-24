@@ -2,6 +2,63 @@ $image-width: 193px; // 225px
 $image-height: 318px; // 350px
 $node-width: calc($image-width + 0.3em * 2);
 
+.siteLanguage {
+  display: grid;
+  top: 0;
+  right: 0;
+
+  justify-items: end;
+
+  z-index: 5;
+
+  .floatieContainer {
+    display: inline-grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.6em;
+
+    margin-top: 0.6em;
+
+    .label {
+      span {
+        font-size: 0.85em;
+      }
+    }
+
+    .toggleContainer {
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr;
+
+      border-radius: 0.3em;
+      overflow: hidden;
+
+      button {
+        display: grid;
+        height: 2em;
+
+        background-color: var(--c-main-panel);
+        border: 0.3em solid transparent;
+
+        place-items: center;
+
+        font-size: 1em;
+
+        transition: background-color, color;
+        transition-timing-function: ease-in-out;
+        transition-duration: 0.2s;
+
+        &:hover:not(:disabled) {
+          cursor: pointer;
+        }
+        &:disabled {
+          background-color: var(--c-main);
+          color: initial;
+        }
+      }
+    }
+  }
+}
+
 .content {
   min-height: calc(100vh - 4em);
   opacity: 0;
